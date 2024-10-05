@@ -53,6 +53,34 @@ function everyCell() {
 everyCell();
 let queueArr = [];
 
+function findColorType(e) {
+  const color = classArr.filter((color) => color === e.target.className);
+  return color.toString();
+}
+
+function findClass(colorType) {
+  return "." + colorType;
+}
+
+//function to check if theres only one block - other functions will not work
+/*
+function checkSingleBlock(e, colorClass) {
+
+  let targettedCell = e.target.parentElement;
+  let x = Number(targettedCell.dataset.x);
+  let y = Number(targettedCell.dataset.y);
+
+  const cellAbove = getCell(x - 1, y);
+  const cellBelow = getCell(x + 1, y);
+  const cellLeft = getCell(x, y - 1);
+  const cellRight = getCell(x, y + 1);
+
+  if ((cellAbove && cellAbove.querySelector(colorClass)) || (cellBelow && cellBelow.querySelector(colorClass)) || (cellLeft && cellLeft.querySelector(colorClass)) || (cellRight && cellRight.querySelector(colorClass))) {
+  
+    cellAbove.querySelector(colorClass).remove();
+}
+}
+*/
 //when clicked on colored block
 //if class list contains "block-blue" find the cellXY it is appended in
 function burstBlock(e, colorClass) {
@@ -80,12 +108,12 @@ function burstBlock(e, colorClass) {
     queueArr.push(cellBelow);
   } else console.log(`cellBelow is not found = ${cellBelow}`);
 
-  if (cellLeft.querySelector(colorClass)) {
+  if (cellLeft && cellLeft.querySelector(colorClass)) {
     cellLeft.querySelector(colorClass).remove();
     queueArr.push(cellLeft);
   } else console.log(`cellLeft is not found = ${cellLeft}`);
 
-  if (cellRight.querySelector(colorClass)) {
+  if (cellRight && cellRight.querySelector(colorClass)) {
     cellRight.querySelector(colorClass).remove();
     queueArr.push(cellRight);
   } else console.log(`cellRight is not found = ${cellRight}`);
@@ -94,67 +122,47 @@ function burstBlock(e, colorClass) {
 }
 
 function burstMoreBlocks(colorClass) {
-  let newQueueArr = []; //init
+  //let newQueueArr = []; //init
+  while (queueArr.length > 0) {
+    //queueArr.forEach((secCell) => {
+    let secCell = queueArr.shift();
 
-  queueArr.forEach((secCell) => {
     let x = Number(secCell.dataset.x);
     let y = Number(secCell.dataset.y);
 
-    const cellAbove = getCell(x - 1, y);
-    const cellBelow = getCell(x + 1, y);
-    const cellLeft = getCell(x, y - 1);
-    const cellRight = getCell(x, y + 1);
+    let cellAbove = getCell(x - 1, y);
+    let cellBelow = getCell(x + 1, y);
+    let cellLeft = getCell(x, y - 1);
+    let cellRight = getCell(x, y + 1);
 
     if (cellAbove && cellAbove.querySelector(colorClass)) {
-      //performs check on the cell in queue
       cellAbove.querySelector(colorClass).remove();
-
-      newQueueArr.push(cellAbove); //add cell is there is
-      //a function that checks if there is more blocks and burst it.
+      queueArr.push(cellAbove);
     } else {
       console.log(`cellAbove is not found= ${cellAbove}`);
     }
 
     if (cellBelow && cellBelow.querySelector(colorClass)) {
       cellBelow.querySelector(colorClass).remove();
-      newQueueArr.push(cellBelow);
+      queueArr.push(cellBelow);
     } else {
       console.log(`cellBelow is not found = ${cellBelow}`);
     }
 
-    if (cellLeft.querySelector(colorClass)) {
+    if (cellLeft && cellLeft.querySelector(colorClass)) {
       cellLeft.querySelector(colorClass).remove();
-      newQueueArr.push(cellLeft);
+      queueArr.push(cellLeft);
     } else {
       console.log(`cellLeft is not found= ${cellLeft}`);
     }
 
-    if (cellRight.querySelector(colorClass)) {
+    if (cellRight && cellRight.querySelector(colorClass)) {
       cellRight.querySelector(colorClass).remove();
-      newQueueArr.push(cellRight);
+      queueArr.push(cellRight);
     } else {
       console.log(`cellRight is not found = ${cellRight}`);
     }
-  });
-
-  queueArr = newQueueArr;
-
-  newQueueArr = []; //instead of shifting 1b1 jus replace the queue
-
-  while (queueArr.length > 0) {
-    //when function is called, it will be repeated until theres no more elements in the queue
-    burstMoreBlocks();
   }
-  console.log(queueArr);
-}
-
-function findColorType(e) {
-  const color = classArr.filter((color) => color === e.target.className);
-  return color.toString();
-}
-
-function findClass(colorType) {
-  return "." + colorType;
 }
 
 container.addEventListener(
