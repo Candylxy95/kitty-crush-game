@@ -1,5 +1,6 @@
 /*----------variables-------------*/
-
+const playButton = document.querySelector("#play");
+const manual = document.querySelector("#instructions");
 const container = document.querySelector("#container");
 const board = document.querySelector("#board");
 const classArr = [
@@ -78,10 +79,10 @@ function burstBlock(e, colorClass) {
   const cellRight = getCell(x, y + 1);
 
   if (
-    !cellAbove.querySelector(colorClass) &&
-    !cellBelow.querySelector(colorClass) &&
-    !cellLeft.querySelector(colorClass) &&
-    !cellRight.querySelector(colorClass)
+    (!cellAbove || !cellAbove.querySelector(colorClass)) &&
+    (!cellBelow || !cellBelow.querySelector(colorClass)) &&
+    (!cellLeft || !cellLeft.querySelector(colorClass)) &&
+    (!cellRight || !cellRight.querySelector(colorClass))
   ) {
     return;
   }
@@ -145,34 +146,54 @@ function burstMoreBlocks(colorClass) {
   }
 }
 
-let childlessCells = [];
+let emptiedCells = [];
 function grabEmptyCells() {
   //scan for empty cells
   //capture its dataset x & y (eg, x = 8, y = 4)
+  emptiedCellsCells = [];
   for (let a = 0; a < 11; a++) {
     for (let b = 0; b < 11; b++) {
-      getCell(a, b);
       const cell = getCell(a, b);
 
       if (cell && cell.childNodes.length === 0) {
         let x = Number(cell.dataset.x);
         let y = Number(cell.dataset.y);
-        childlessCells.push(getCell(x, y)); //get cells with no child
+        emptiedCells.push(getCell(x, y)); //get cells with no child
       } /*else {
         console.log(`no empty cells found`);
-      }*/
+      } */
     }
   }
-  console.log(childlessCells);
+  console.log(`empty cells = ${emptiedCells}`);
   //find cells with the same Yaxis but smalle X axis that contains child.
 }
-
+//if cell is empty and cell above contains childBlock
 function fillEmptyCells() {
-  let emptyCell = childlessCells.shift(); //pass the first element to be "checked"
-  //blocks on higher X axis (smaller numbers) will fall to lower (larger number)
-  //check if cells on y4 with X axis smaller than 8 contains blocks?
-  //check if cell on the same Y with <X contains blocks.
+  while (emptiedCells.length > 0) {
+    let emptyCell = emptiedCells.pop(); //pass the last element to be "checked"
+    //last element has the largest X value
+    let x = Number(emptyCell.dataset.x);
+    let y = Number(emptyCell.dataset.y);
+    console.log(`emptyCells to be processed: x = ${x} y = ${y}`);
+    //blocks on higher X axis (smaller numbers) will fall to lower (larger number)
+    //check if cells on y4 with X axis smaller than 8 contains blocks?
+    //check if cell on the same Y with <X contains blocks.
+
+    for (let a = x - 1; a >= 1; a--) {
+      //loop through to find nearest Xcell with child node
+      let upperCell = getCell(a, y);
+      if (upperCell && upperCell.hasChildNodes()) {
+        const fallingBlock = upperCell.removeChild(upperCell.firstChild);
+        emptiedCells.push(upperCell);
+        getCell(x, y).appendChild(fallingBlock);
+        break;
+      }
+    }
+  }
+  console.log(`childless cell Arr = ${childlessCells}`);
 }
+
+playButton.addEventListener("click", () => (manual.style.display = "none"));
 
 container.addEventListener("dblclick", (e) => {
   const colorType = findColorType(e);
@@ -182,7 +203,9 @@ container.addEventListener("dblclick", (e) => {
     const colorClass = findClass(colorType);
     burstBlock(e, colorClass);
     burstMoreBlocks(colorClass);
+
     grabEmptyCells();
+    fillEmptyCells();
   }
 });
 

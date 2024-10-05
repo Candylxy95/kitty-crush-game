@@ -4,10 +4,12 @@
   --pink: #e2a1ae;
   --black: #221e22;
   --white: #fdf0d5;
+  --linen: #f7ece1;
+  --beige: #ead2ac;
 }
 
 body {
-  background-color: var(--white);
+  background-color: var(--linen);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -68,5 +70,33 @@ h1 {
 .block-black {
   width: 78px;
   height: 58px;
+  background-image: url();
   background-color: var(--black);
+}
+
+#instructions {
+  position: absolute;
+  top: 200px;
+  width: 600px;
+  height: 450px;
+  background-color: var(--beige);
+  align-content: center;
+  text-align: center;
+}
+
+#play {
+  background-color: var(--black);
+  width: 100px;
+  height: 40px;
+  border-radius: 20px;
+  color: var(--white);
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  border: 4px solid var(--green);
+}
+
+#play:hover {
+  background-color: var(--pink);
+  color: var(--blue);
+  font-weight: 900;
 }
