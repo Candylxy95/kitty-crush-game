@@ -1,0 +1,27 @@
+1. Create board filled with cells through X & Y axis 
+
+2. Randomly populate cells with 5 different colored blocks
+
+* create different instances? of block representing diff colors?
+* append each cell with diff colored blocks
+* randomize blocks to append to each cell
+
+3. if blocks next to one another are of the same color, double click to clear the blocks.
+* check if cell around it are also appended with the same instance of block?
+* if it is move to the cell that is and check if it is also appended? LOOP?
+* clear all that are next to it.
+4. if !block around it, return
+
+5.remaining blocks will fill up the next avaliable cells, left right up down.
+* check if cell do not contain block and move?
+
+6. win by clearing enough points within given time frame
+
+Variable
+1. cells
+2. blocks
+
+Stretch goals 
+1) Animation
+2) Timer
+3) Score

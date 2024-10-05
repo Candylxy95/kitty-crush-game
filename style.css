@@ -1,0 +1,72 @@
+:root {
+  --blue: #2660a4;
+  --green: #417b5a;
+  --pink: #e2a1ae;
+  --black: #221e22;
+  --white: #fdf0d5;
+}
+
+body {
+  background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--green);
+  font-size: 20px;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+#container,
+#board {
+  width: 800px;
+  height: 600px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.cell {
+  width: 78px;
+  height: 58px;
+  border: 1px solid orangered;
+  text-align: center;
+  align-content: center;
+  display: fixed;
+  justify-content: center;
+  align-items: center;
+}
+
+.block-green {
+  width: 78px;
+  height: 58px;
+  background-color: var(--green);
+}
+
+.block-blue {
+  width: 78px;
+  height: 58px;
+  background-color: var(--blue);
+}
+
+.block-white {
+  width: 78px;
+  height: 58px;
+  background-color: var(--white);
+}
+
+.block-pink {
+  width: 78px;
+  height: 58px;
+  background-color: var(--pink);
+}
+
+.block-black {
+  width: 78px;
+  height: 58px;
+  background-color: var(--black);
+}
