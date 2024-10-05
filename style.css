@@ -43,6 +43,14 @@ h1 {
   align-items: center;
 }
 
+.block-green:hover,
+.block-black:hover,
+.block-blue:hover,
+.block-pink:hover,
+.block-white:hover {
+  filter: saturate(50%);
+}
+
 .block-green {
   width: 78px;
   height: 58px;

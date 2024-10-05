@@ -69,7 +69,6 @@ function burstBlock(e, colorClass) {
   let targettedCell = e.target.parentElement;
   let x = Number(targettedCell.dataset.x);
   let y = Number(targettedCell.dataset.y);
-  console.log(`X= ${x}, Y=${y}`);
   //BEEFORE REMOVING - check the areas!!!!
   //make a modular code -> remove everythign that is grouped!
 
@@ -150,7 +149,7 @@ let emptiedCells = [];
 function grabEmptyCells() {
   //scan for empty cells
   //capture its dataset x & y (eg, x = 8, y = 4)
-  emptiedCellsCells = [];
+  emptiedCells = [];
   for (let a = 0; a < 11; a++) {
     for (let b = 0; b < 11; b++) {
       const cell = getCell(a, b);
@@ -164,7 +163,6 @@ function grabEmptyCells() {
       } */
     }
   }
-  console.log(`empty cells = ${emptiedCells}`);
   //find cells with the same Yaxis but smalle X axis that contains child.
 }
 //if cell is empty and cell above contains childBlock
@@ -174,7 +172,6 @@ function fillEmptyCells() {
     //last element has the largest X value
     let x = Number(emptyCell.dataset.x);
     let y = Number(emptyCell.dataset.y);
-    console.log(`emptyCells to be processed: x = ${x} y = ${y}`);
     //blocks on higher X axis (smaller numbers) will fall to lower (larger number)
     //check if cells on y4 with X axis smaller than 8 contains blocks?
     //check if cell on the same Y with <X contains blocks.
@@ -190,7 +187,28 @@ function fillEmptyCells() {
       }
     }
   }
-  console.log(`childless cell Arr = ${childlessCells}`);
+}
+
+function gapCheck() {
+  let y = 10;
+
+  while (y > 0) {
+    let columnArr = [];
+    for (let x = 1; x < 11; x++) {
+      const cell = getCell(x, y);
+      if (cell) {
+        columnArr.push(getCell(x, y));
+      }
+    }
+
+    const emptyColumn = columnArr.every((cell) => cell.childNodes.length === 0);
+    if (emptyColumn) {
+      //checks that everycell returns without a child
+      console.log(`heres the value of empty column Y = ${y}`);
+      return;
+    }
+    y--;
+  }
 }
 
 playButton.addEventListener("click", () => (manual.style.display = "none"));
@@ -206,6 +224,8 @@ container.addEventListener("dblclick", (e) => {
 
     grabEmptyCells();
     fillEmptyCells();
+
+    gapCheck();
   }
 });
 
