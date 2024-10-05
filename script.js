@@ -91,12 +91,22 @@ function burstBlock(e, colorClass) {
   console.log(e.target.className);
   //BEEFORE REMOVING - check the areas!!!!
   //make a modular code -> remove everythign that is grouped!
-  e.target.remove();
 
   const cellAbove = getCell(x - 1, y);
   const cellBelow = getCell(x + 1, y);
   const cellLeft = getCell(x, y - 1);
   const cellRight = getCell(x, y + 1);
+
+  if (
+    !cellAbove.querySelector(colorClass) &&
+    !cellBelow.querySelector(colorClass) &&
+    !cellLeft.querySelector(colorClass) &&
+    !cellRight.querySelector(colorClass)
+  ) {
+    return;
+  }
+
+  e.target.remove();
 
   if (cellAbove && cellAbove.querySelector(colorClass)) {
     cellAbove.querySelector(colorClass).remove();
