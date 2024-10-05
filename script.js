@@ -2,6 +2,13 @@
 
 const container = document.querySelector("#container");
 const board = document.querySelector("#board");
+const classArr = [
+  "block-blue",
+  "block-green",
+  "block-pink",
+  "block-white",
+  "block-black",
+];
 
 const cellDiv = "";
 //populate container with cells
@@ -24,13 +31,6 @@ function getCell(x, y) {
 //return randomize blocks
 //generate a block of a certain class
 function randomBlocks() {
-  let classArr = [
-    "block-blue",
-    "block-green",
-    "block-pink",
-    "block-white",
-    "block-black",
-  ];
   const idx = Math.floor(Math.random() * classArr.length);
   let block = document.createElement("div");
   block.classList.add(classArr[idx]);
@@ -55,7 +55,7 @@ let queueArr = [];
 
 //when clicked on colored block
 //if class list contains "block-blue" find the cellXY it is appended in
-function burstBlock(e) {
+function burstBlock(e, colorClass) {
   let targettedCell = e.target.parentElement;
   let x = Number(targettedCell.dataset.x);
   let y = Number(targettedCell.dataset.y);
@@ -70,30 +70,30 @@ function burstBlock(e) {
   const cellLeft = getCell(x, y - 1);
   const cellRight = getCell(x, y + 1);
 
-  if (cellAbove && cellAbove.querySelector(".block-blue")) {
-    cellAbove.querySelector(".block-blue").remove();
+  if (cellAbove && cellAbove.querySelector(colorClass)) {
+    cellAbove.querySelector(colorClass).remove();
     queueArr.push(cellAbove);
   } else console.log(`cellAbove is not found = ${cellAbove}`);
 
-  if (cellBelow && cellBelow.querySelector(".block-blue")) {
-    cellBelow.querySelector(".block-blue").remove();
+  if (cellBelow && cellBelow.querySelector(colorClass)) {
+    cellBelow.querySelector(colorClass).remove();
     queueArr.push(cellBelow);
   } else console.log(`cellBelow is not found = ${cellBelow}`);
 
-  if (cellLeft.querySelector(".block-blue")) {
-    cellLeft.querySelector(".block-blue").remove();
+  if (cellLeft.querySelector(colorClass)) {
+    cellLeft.querySelector(colorClass).remove();
     queueArr.push(cellLeft);
   } else console.log(`cellLeft is not found = ${cellLeft}`);
 
-  if (cellRight.querySelector(".block-blue")) {
-    cellRight.querySelector(".block-blue").remove();
+  if (cellRight.querySelector(colorClass)) {
+    cellRight.querySelector(colorClass).remove();
     queueArr.push(cellRight);
   } else console.log(`cellRight is not found = ${cellRight}`);
 
   console.log(queueArr);
 }
 
-function burstMoreBlocks() {
+function burstMoreBlocks(colorClass) {
   let newQueueArr = []; //init
 
   queueArr.forEach((secCell) => {
@@ -105,9 +105,9 @@ function burstMoreBlocks() {
     const cellLeft = getCell(x, y - 1);
     const cellRight = getCell(x, y + 1);
 
-    if (cellAbove && cellAbove.querySelector(".block-blue")) {
+    if (cellAbove && cellAbove.querySelector(colorClass)) {
       //performs check on the cell in queue
-      cellAbove.querySelector(".block-blue").remove();
+      cellAbove.querySelector(colorClass).remove();
 
       newQueueArr.push(cellAbove); //add cell is there is
       //a function that checks if there is more blocks and burst it.
@@ -115,22 +115,22 @@ function burstMoreBlocks() {
       console.log(`cellAbove is not found= ${cellAbove}`);
     }
 
-    if (cellBelow && cellBelow.querySelector(".block-blue")) {
-      cellBelow.querySelector(".block-blue").remove();
+    if (cellBelow && cellBelow.querySelector(colorClass)) {
+      cellBelow.querySelector(colorClass).remove();
       newQueueArr.push(cellBelow);
     } else {
       console.log(`cellBelow is not found = ${cellBelow}`);
     }
 
-    if (cellLeft.querySelector(".block-blue")) {
-      cellLeft.querySelector(".block-blue").remove();
+    if (cellLeft.querySelector(colorClass)) {
+      cellLeft.querySelector(colorClass).remove();
       newQueueArr.push(cellLeft);
     } else {
       console.log(`cellLeft is not found= ${cellLeft}`);
     }
 
-    if (cellRight.querySelector(".block-blue")) {
-      cellRight.querySelector(".block-blue").remove();
+    if (cellRight.querySelector(colorClass)) {
+      cellRight.querySelector(colorClass).remove();
       newQueueArr.push(cellRight);
     } else {
       console.log(`cellRight is not found = ${cellRight}`);
@@ -148,15 +148,25 @@ function burstMoreBlocks() {
   console.log(queueArr);
 }
 
+function findColorType(e) {
+  const color = classArr.filter((color) => color === e.target.className);
+  return color.toString();
+}
+
+function findClass(colorType) {
+  return "." + colorType;
+}
+
 container.addEventListener(
   "dblclick",
   (e) => {
-    if (e.target.classList.contains("block-blue")) {
-      //capture classLIST
+    const colorType = findColorType(e);
+    if (e.target.classList.contains(colorType)) {
       //make it modular - contains the same classlist
-
-      burstBlock(e);
-      burstMoreBlocks();
+      findClass(colorType);
+      const colorClass = findClass(colorType);
+      burstBlock(e, colorClass);
+      burstMoreBlocks(colorClass);
     }
   } //else single - do not burst!
 );

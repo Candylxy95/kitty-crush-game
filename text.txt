@@ -17,6 +17,16 @@
 
 6. win by clearing enough points within given time frame
 
+/* when game runs
+1. initialized - random blocks on load
+2. player clicks 
+3. targetted block will scan for surrounding blocks
+4. group surrounding blocks
+5. burst all grouped blocks
+6. blocks on the x axis will fall to larger x numbers and fill up any holes.
+*/
+
+
 Variable
 1. cells
 2. blocks
