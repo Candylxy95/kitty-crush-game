@@ -115,13 +115,13 @@ function burstMoreBlocks(colorClass) {
     //queueArr.forEach((secCell) => {
     let secCell = queueArr.shift();
 
-    let x = Number(secCell.dataset.x);
-    let y = Number(secCell.dataset.y);
+    const x = Number(secCell.dataset.x);
+    const y = Number(secCell.dataset.y);
 
-    let cellAbove = getCell(x - 1, y);
-    let cellBelow = getCell(x + 1, y);
-    let cellLeft = getCell(x, y - 1);
-    let cellRight = getCell(x, y + 1);
+    const cellAbove = getCell(x - 1, y);
+    const cellBelow = getCell(x + 1, y);
+    const cellLeft = getCell(x, y - 1);
+    const cellRight = getCell(x, y + 1);
 
     if (cellAbove && cellAbove.querySelector(colorClass)) {
       cellAbove.querySelector(colorClass).remove();
@@ -205,7 +205,6 @@ function checkAndCollapseGap() {
     if (emptyColumn) {
       //checks that everycell returns without a child
       const emptyY = y;
-      console.log(`heres the value of empty column Y = ${emptyY}`);
       collapseGap(emptyY);
     }
     y--;
@@ -220,10 +219,59 @@ function collapseGap(yvalue) {
         const moveBlocks = cell.removeChild(cell.firstChild);
         const moveToCell = getCell(x, y + 1);
         moveToCell.appendChild(moveBlocks);
-        console.log("gap collapsed");
       }
     }
   }
+}
+
+//scans through cells to determine if theres any linking blocks left
+function scanForWin() {
+  //loop through each cell with childNodes
+  // loop through each colorClass to check 4 surroundings
+  let appCellArr = [];
+  for (let x = 1; x < 11; x++) {
+    for (let y = 1; y < 11; y++) {
+      const cell = getCell(x, y);
+      if (cell && cell.childNodes.length > 0) {
+        appCellArr.push(cell);
+      }
+    }
+  }
+
+  const matchingBlocks = appCellArr.some((testCell) => {
+    x = Number(testCell.dataset.x);
+    y = Number(testCell.dataset.y);
+
+    const cellAbove = getCell(x - 1, y);
+    const cellBelow = getCell(x + 1, y);
+    const cellLeft = getCell(x, y - 1);
+    const cellRight = getCell(x, y + 1);
+
+    if (
+      (cellAbove &&
+        cellAbove.firstChild &&
+        cellAbove.firstChild.className === testCell.firstChild.className) ||
+      (cellBelow &&
+        cellBelow.firstChild &&
+        cellBelow.firstChild.className === testCell.firstChild.className) ||
+      (cellLeft &&
+        cellLeft.firstChild &&
+        cellLeft.firstChild.className === testCell.firstChild.className) ||
+      (cellRight &&
+        cellRight.firstChild &&
+        cellRight.firstChild.className === testCell.firstChild.className)
+    ) {
+      console.log("game continues");
+      return true;
+    }
+    return false;
+  });
+
+  if (!matchingBlocks) {
+    console.log("gameOver");
+  }
+
+  appCellArr = [];
 }
 
 playButton.addEventListener("click", () => (manual.style.display = "none"));
@@ -241,6 +289,7 @@ container.addEventListener("dblclick", (e) => {
     fillEmptyCells();
 
     checkAndCollapseGap();
+    scanForWin();
   }
 });
 
