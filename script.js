@@ -189,7 +189,7 @@ function fillEmptyCells() {
   }
 }
 
-function gapCheck() {
+function checkAndCollapseGap() {
   let y = 10;
 
   while (y > 0) {
@@ -204,10 +204,25 @@ function gapCheck() {
     const emptyColumn = columnArr.every((cell) => cell.childNodes.length === 0);
     if (emptyColumn) {
       //checks that everycell returns without a child
-      console.log(`heres the value of empty column Y = ${y}`);
-      return;
+      const emptyY = y;
+      console.log(`heres the value of empty column Y = ${emptyY}`);
+      collapseGap(emptyY);
     }
     y--;
+  }
+}
+
+function collapseGap(yvalue) {
+  for (x = 1; x < 11; x++) {
+    for (y = 1; y < yvalue; y++) {
+      const cell = getCell(x, y);
+      if (cell && cell.hasChildNodes()) {
+        const moveBlocks = cell.removeChild(cell.firstChild);
+        const moveToCell = getCell(x, y + 1);
+        moveToCell.appendChild(moveBlocks);
+        console.log("gap collapsed");
+      }
+    }
   }
 }
 
@@ -225,7 +240,7 @@ container.addEventListener("dblclick", (e) => {
     grabEmptyCells();
     fillEmptyCells();
 
-    gapCheck();
+    checkAndCollapseGap();
   }
 });
 
