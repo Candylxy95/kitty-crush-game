@@ -1,4 +1,6 @@
 /*----------variables-------------*/
+//things to init PREV SCORE ARR,
+//Score
 
 const classArr = [
   "block-blue",
@@ -8,6 +10,7 @@ const classArr = [
   "block-black",
 ];
 let queueArr = [];
+let prevScoreArr = [];
 
 /*--- cached element-----*/
 const playButton = document.querySelector("#play");
@@ -15,6 +18,7 @@ const manual = document.querySelector("#instructions");
 const container = document.querySelector("#container");
 const board = document.querySelector("#board");
 const endBoard = document.querySelector("#end-board");
+let score = document.querySelector("#score-count");
 
 const cellDiv = "";
 //populate container with cells
@@ -277,8 +281,47 @@ function scanForWin() {
   appCellArr = [];
 }
 
+function scoreSystem() {
+  let currScoreArr = []; //length of total scoreArray
+  let points = "";
+  //length scoreArray before it is appended with new blocks from this round (an unupdated);
+
+  //onclick - 2 cats = 1 point
+  //scan cells to see how many cats have been removed each round - accumulative...
+  for (let x = 1; x < 11; x++) {
+    for (let y = 1; y < 11; y++) {
+      //calculate cells not appended with blocks
+      let cell = getCell(x, y);
+      if (cell && !cell.hasChildNodes()) {
+        currScoreArr.push(cell); //get the length of total unappended blocks minus previously unappended blocks.
+      }
+    }
+  }
+
+  let prevScore = prevScoreArr.reduce((acc, num) => acc + num, 0);
+  points = currScoreArr.length - prevScore; //SUM OF PREVSCORE ARR.
+
+  //push the total num of everything that was deleted into calScore Arr.
+  if (points === 2) {
+    score.innerText = Number(score.innerText) + 1;
+  } else if (points > 2 && points < 5) {
+    score.innerText = Number(score.innerText) + points * 2;
+  } else if (points >= 5) {
+    score.innerText = Number(score.innerText) + points * 3;
+  }
+
+  console.log(`points: ${points}, currScoreArr = ${currScoreArr.length}`);
+  prevScoreArr.push(Number(points)); //stores the number of blocks cleared each round.
+
+  currScoreArr.length = 0;
+
+  console.log(`prev score arr = ${prevScoreArr}`);
+}
+
 everyCell();
 endBoard.style.display = "none";
+score.innerText = 0;
+console.log(typeof score.innerText);
 
 playButton.addEventListener("click", () => (manual.style.display = "none"));
 
@@ -293,6 +336,8 @@ container.addEventListener("dblclick", (e) => {
 
     grabEmptyCells();
     fillEmptyCells();
+
+    scoreSystem();
 
     checkAndCollapseGap();
     scanForWin();
