@@ -37,7 +37,8 @@ for (let x = 1; x < 11; x++) {
 }
 
 let timeCount = 60;
-timer.innerText = Number(timeCount);
+let timeCounter = "";
+timer.innerText = timeCount;
 
 /*----------functions-------------*/
 //function to get cell by its coordinate
@@ -283,6 +284,7 @@ function scanForWin() {
   if (!matchingBlocks) {
     console.log("gameOver");
     endBoard.style.display = "block";
+    clearInterval(timeCounter);
   }
 
   appCellArr = [];
@@ -330,7 +332,9 @@ function didYouWin() {
 }
 
 function startTimer() {
-  const timeCounter = setInterval(() => {
+  clearInterval(timeCounter);
+
+  timeCounter = setInterval(() => {
     timeCount--;
     timer.innerText = timeCount;
     if (timeCount === 0) {
@@ -340,9 +344,14 @@ function startTimer() {
   }, 1000);
 }
 
-everyCell();
-endBoard.style.display = "none";
-score.innerText = 0;
+function init() {
+  everyCell();
+  endBoard.style.display = "none";
+  score.innerText = 0;
+  timeCount = 60;
+}
+
+init();
 
 playButton.addEventListener("click", () => {
   manual.style.display = "none";
@@ -367,4 +376,9 @@ container.addEventListener("dblclick", (e) => {
     scanForWin();
     didYouWin();
   }
+});
+
+replay.addEventListener("click", () => {
+  init();
+  startTimer();
 });
