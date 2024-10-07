@@ -19,6 +19,10 @@ const container = document.querySelector("#container");
 const board = document.querySelector("#board");
 const endBoard = document.querySelector("#end-board");
 let score = document.querySelector("#score-count");
+let endBoardScore = document.querySelector("#end-board-score");
+const victoryMsg = document.querySelector("#victory-msg");
+const replay = document.querySelector("#replay");
+const timer = document.querySelector("#time-count");
 
 const cellDiv = "";
 //populate container with cells
@@ -31,6 +35,9 @@ for (let x = 1; x < 11; x++) {
     cellDiv.dataset.y = y;
   }
 }
+
+let timeCount = 60;
+timer.innerText = Number(timeCount);
 
 /*----------functions-------------*/
 //function to get cell by its coordinate
@@ -47,13 +54,13 @@ function randomBlocks() {
   return block;
 }
 
-//function to select every single cell
+//function to select every single cell & append block
 function everyCell() {
   for (let a = 1; a < 11; a++) {
     for (let b = 1; b < 11; b++) {
       let cell = getCell(a, b);
       //document.querySelector(`.cell[data-x="${a}"][data-y="${b}"]`);
-      if (cell) {
+      if (cell && cell.childNodes.length === 0) {
         cell.appendChild(randomBlocks());
       }
     }
@@ -306,24 +313,41 @@ function scoreSystem() {
     score.innerText = Number(score.innerText) + 1;
   } else if (points > 2 && points < 5) {
     score.innerText = Number(score.innerText) + points * 2;
-  } else if (points >= 5) {
+  } else if (points >= 5 && points < 8) {
     score.innerText = Number(score.innerText) + points * 3;
+  } else if (points >= 8) {
+    score.innerText = Number(score.innerText) + points * 5;
   }
-
-  console.log(`points: ${points}, currScoreArr = ${currScoreArr.length}`);
+  endBoardScore.innerText = score.innerText;
   prevScoreArr.push(Number(points)); //stores the number of blocks cleared each round.
-
   currScoreArr.length = 0;
+}
 
-  console.log(`prev score arr = ${prevScoreArr}`);
+function didYouWin() {
+  if (Number(endBoardScore.innerText) > 200) {
+    victoryMsg.innerText = "CONGRATULATIONS! You've won!";
+  } else victoryMsg.innerText = "Sorry, please try harder.";
+}
+
+function startTimer() {
+  const timeCounter = setInterval(() => {
+    timeCount--;
+    timer.innerText = timeCount;
+    if (timeCount === 0) {
+      endBoard.style.display = "block";
+      clearInterval(timeCounter);
+    }
+  }, 1000);
 }
 
 everyCell();
 endBoard.style.display = "none";
 score.innerText = 0;
-console.log(typeof score.innerText);
 
-playButton.addEventListener("click", () => (manual.style.display = "none"));
+playButton.addEventListener("click", () => {
+  manual.style.display = "none";
+  startTimer();
+});
 
 container.addEventListener("dblclick", (e) => {
   const colorType = findColorType(e);
@@ -341,5 +365,6 @@ container.addEventListener("dblclick", (e) => {
 
     checkAndCollapseGap();
     scanForWin();
+    didYouWin();
   }
 });
