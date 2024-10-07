@@ -1,15 +1,20 @@
 /*----------variables-------------*/
-const playButton = document.querySelector("#play");
-const manual = document.querySelector("#instructions");
-const container = document.querySelector("#container");
-const board = document.querySelector("#board");
+
 const classArr = [
   "block-blue",
-  "block-green",
+  "block-orange",
   "block-pink",
   "block-white",
   "block-black",
 ];
+let queueArr = [];
+
+/*--- cached element-----*/
+const playButton = document.querySelector("#play");
+const manual = document.querySelector("#instructions");
+const container = document.querySelector("#container");
+const board = document.querySelector("#board");
+const endBoard = document.querySelector("#end-board");
 
 const cellDiv = "";
 //populate container with cells
@@ -50,9 +55,6 @@ function everyCell() {
     }
   }
 }
-
-everyCell();
-let queueArr = [];
 
 function findColorType(e) {
   const color = classArr.filter((color) => color === e.target.className);
@@ -269,10 +271,14 @@ function scanForWin() {
 
   if (!matchingBlocks) {
     console.log("gameOver");
+    endBoard.style.display = "block";
   }
 
   appCellArr = [];
 }
+
+everyCell();
+endBoard.style.display = "none";
 
 playButton.addEventListener("click", () => (manual.style.display = "none"));
 
@@ -292,11 +298,3 @@ container.addEventListener("dblclick", (e) => {
     scanForWin();
   }
 });
-
-/* when game runs
-1. initialized - random blocks on load
-2. player clicks 
-3. targetted block will scan for surrounding blocks
-4. burst all grouped blocks with loops 
-6. blocks on the x axis will fall to larger x numbers and fill up any holes.
-*/
