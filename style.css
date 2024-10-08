@@ -1,6 +1,7 @@
 :root {
   --blue: #28384f;
   --lblue: #9db2c7;
+  --llblue: #b2c9d8;
   --orange: #e5833b;
   --purple: #ba94c0;
   --pink: #e1c3d5;
@@ -11,8 +12,52 @@
   --gray: #363636;
 }
 
+@keyframes moveCloudsL {
+  from {
+    left: -30%;
+  }
+  to {
+    left: 100%;
+  }
+}
+
+@keyframes moveCloudsR {
+  from {
+    right: -30%;
+  }
+  to {
+    right: 100%;
+  }
+}
+
+@keyframes moveCloudsM {
+  from {
+    left: 0%;
+  }
+  to {
+    left: 100%;
+  }
+}
+
+@keyframes enlargeCloud {
+  0% {
+    height: 150px;
+    width: auto;
+  }
+  50% {
+    height: 180px;
+    width: auto;
+  }
+  100% {
+    height: 150px;
+    width: auto;
+  }
+}
+
 body {
-  background-color: var(--linen);
+  background-image: linear-gradient(var(--llblue), var(--pink));
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -20,6 +65,7 @@ body {
   color: var(--gray);
   font-family: "Lexend", sans-serif;
   font-size: 20px;
+  min-height: 100vh;
 }
 
 h1 {
@@ -33,6 +79,7 @@ h1 {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  position: static;
 }
 
 #container {
@@ -40,13 +87,16 @@ h1 {
   flex-direction: column;
   border: 10px solid var(--lblue);
   border-radius: 25px;
-  background-color: var(--linen);
+  box-shadow: 0px 0px 20px var(--blue);
 }
 
 #nav {
-  height: 70px;
+  height: 78px;
   width: 100%;
-  display: inline;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
   background-color: var(--lblue);
   color: var(--gray);
 }
@@ -108,7 +158,7 @@ li {
 .block-pink {
   width: 78px;
   height: 58px;
-  background-image: url(../project-1-game/images/Cat-pink2.png);
+  background-image: url(../project-1-game/images/Cat-pink.png);
   background-size: contain;
   /*background-color: var(--pink);*/
 }
@@ -122,9 +172,10 @@ li {
 }
 
 #instructions,
-#end-board {
+#end-board,
+#manualSansButton {
   position: absolute;
-  top: 250px;
+  top: 350px;
   width: 600px;
   height: 450px;
   background-color: var(--beige);
@@ -153,14 +204,15 @@ li {
   font-weight: 900;
 }
 
-#instructions > ul {
+#instructions > ul,
+#manualSansButton > ul {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
   font-size: 20px;
 }
 
-.nav-button {
+#nav-button {
   background-color: var(--beige);
   height: 40px;
   border-radius: 10px;
@@ -169,14 +221,63 @@ li {
   border: 5px solid var(--linen);
 }
 
-#manual-button {
-  background: url(../project-1-game/images/user-guide.png);
-  object-fit: cover;
+#nav-button:hover {
+  background-color: var(--black);
+  border: 5px solid var(--orange);
+  color: var(--linen);
 }
 
-#background-cloud {
+#icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  height: 40px;
+  position: static;
+}
+
+.background-ele {
+  position: absolute;
   z-index: -1;
-  width: 300px;
-  height: 300px;
-  background-color: white;
+  width: 50%;
+  height: auto;
+  right: 10px;
+}
+
+#cloud {
+  animation: moveCloudsR 60s infinite linear;
+}
+
+#cloud2 {
+  left: 10px;
+  bottom: 0px;
+  animation: moveCloudsL 50s infinite linear;
+}
+
+#cloud3 {
+  width: 40%;
+  top: 30px;
+  left: 30px;
+  animation: moveCloudsL 60s infinite linear;
+}
+
+#cloud4 {
+  width: 40%;
+  left: 400px;
+  bottom: 0px;
+  animation: moveCloudsM 40s infinite linear;
+}
+
+header {
+  text-align: center;
+}
+
+#kitty-crush {
+  z-index: 1;
+  height: 200px;
+  position: static;
+  animation: enlargeCloud 10s infinite;
+}
+
+#manualBook:hover {
+  filter: saturate(20);
 }

@@ -15,6 +15,8 @@ let prevScoreArr = [];
 /*--- cached element-----*/
 const playButton = document.querySelector("#play");
 const manual = document.querySelector("#instructions");
+const manualSansButton = document.querySelector("#manualSansButton");
+const manualBook = document.querySelector("#manualBook");
 const container = document.querySelector("#container");
 const board = document.querySelector("#board");
 const endBoard = document.querySelector("#end-board");
@@ -22,7 +24,14 @@ let score = document.querySelector("#score-count");
 let endBoardScore = document.querySelector("#end-board-score");
 const victoryMsg = document.querySelector("#victory-msg");
 const replay = document.querySelector("#replay");
+const restart = document.querySelector("#nav-button");
 const timer = document.querySelector("#time-count");
+let timeCount = 60;
+let timeCounter = "";
+timer.innerText = timeCount;
+let clickSound = new Audio(
+  "../project-1-game/sound/mixkit-gear-fast-lock-tap-2857.wav"
+);
 
 const cellDiv = "";
 //populate container with cells
@@ -35,10 +44,6 @@ for (let x = 1; x < 11; x++) {
     cellDiv.dataset.y = y;
   }
 }
-
-let timeCount = 60;
-let timeCounter = "";
-timer.innerText = timeCount;
 
 /*----------functions-------------*/
 //function to get cell by its coordinate
@@ -77,6 +82,15 @@ function findClass(colorType) {
   return "." + colorType;
 }
 
+function getCells(x, y) {
+  const cellAbove = getCell(x - 1, y);
+  const cellBelow = getCell(x + 1, y);
+  const cellLeft = getCell(x, y - 1);
+  const cellRight = getCell(x, y + 1);
+
+  return [cellAbove, cellBelow, cellLeft, cellRight];
+}
+
 //when clicked on colored block
 //if class list contains "block-blue" find the cellXY it is appended in
 function burstBlock(e, colorClass) {
@@ -86,10 +100,7 @@ function burstBlock(e, colorClass) {
   //BEEFORE REMOVING - check the areas!!!!
   //make a modular code -> remove everythign that is grouped!
 
-  const cellAbove = getCell(x - 1, y);
-  const cellBelow = getCell(x + 1, y);
-  const cellLeft = getCell(x, y - 1);
-  const cellRight = getCell(x, y + 1);
+  const [cellAbove, cellBelow, cellLeft, cellRight] = getCells(x, y);
 
   if (
     (!cellAbove || !cellAbove.querySelector(colorClass)) &&
@@ -132,10 +143,7 @@ function burstMoreBlocks(colorClass) {
     const x = Number(secCell.dataset.x);
     const y = Number(secCell.dataset.y);
 
-    const cellAbove = getCell(x - 1, y);
-    const cellBelow = getCell(x + 1, y);
-    const cellLeft = getCell(x, y - 1);
-    const cellRight = getCell(x, y + 1);
+    const [cellAbove, cellBelow, cellLeft, cellRight] = getCells(x, y);
 
     if (cellAbove && cellAbove.querySelector(colorClass)) {
       cellAbove.querySelector(colorClass).remove();
@@ -157,6 +165,10 @@ function burstMoreBlocks(colorClass) {
       queueArr.push(cellRight);
     }
   }
+  let mySound = new Audio(
+    "../project-1-game/sound/mixkit-sweet-kitty-meow-93.wav"
+  );
+  mySound.play();
 }
 
 let emptiedCells = [];
@@ -256,10 +268,7 @@ function scanForWin() {
     x = Number(testCell.dataset.x);
     y = Number(testCell.dataset.y);
 
-    const cellAbove = getCell(x - 1, y);
-    const cellBelow = getCell(x + 1, y);
-    const cellLeft = getCell(x, y - 1);
-    const cellRight = getCell(x, y + 1);
+    const [cellAbove, cellBelow, cellLeft, cellRight] = getCells(x, y);
 
     if (
       (cellAbove &&
@@ -347,13 +356,25 @@ function startTimer() {
 function init() {
   everyCell();
   endBoard.style.display = "none";
+  manualSansButton.style.display = "none";
   score.innerText = 0;
   timeCount = 60;
 }
 
+function toggleManual() {
+  if (manualSansButton.style.display === "none") {
+    return (manualSansButton.style.display = "block");
+  } else manualSansButton.style.display = "none";
+}
+
 init();
 
+playButton.addEventListener("mouseover", () => {
+  clickSound.play();
+});
+
 playButton.addEventListener("click", () => {
+  clickSound.play();
   manual.style.display = "none";
   startTimer();
 });
@@ -377,8 +398,23 @@ container.addEventListener("dblclick", (e) => {
     didYouWin();
   }
 });
+replay.addEventListener("mouseover", () => clickSound.play());
 
 replay.addEventListener("click", () => {
+  clickSound.play();
   init();
   startTimer();
+});
+
+restart.addEventListener("mouseover", () => clickSound.play());
+
+restart.addEventListener("click", () => {
+  clickSound.play();
+  init();
+  startTimer();
+});
+
+manualBook.addEventListener("click", () => {
+  clickSound.play();
+  toggleManual();
 });

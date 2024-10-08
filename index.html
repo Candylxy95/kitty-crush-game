@@ -7,16 +7,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
-    <title>A cat block game</title>
+    <title>A Kitty Crush Game</title>
   </head>
 
   <body>
     <header>
-      <h1>Cat Blocks</h1>
+      <div></div>
+      <img src = "images/Kitty-crush-color.png" id = "kitty-crush">
+      <!--<h1>Cat Blocks</h1>-->
     </header>
-
-    <div id = #background-cloud></div>
-
+<img src = "images/Cloud.png" class = "background-ele" id = "cloud" alt="cloud">
+<img src = "images/Cloud2.png" class = "background-ele" id = "cloud2" alt="cloud">
+<img src = "images/Cloud3.png" class = "background-ele" id = "cloud3" alt="cloud">
+<img src = "images/Cloud.png" class = "background-ele" id = "cloud4" alt="cloud">
     <div id="instructions">
       <h2>How to play?</h2>
       <ul>
@@ -34,6 +37,18 @@
         </button>
       </div>
     </div>
+
+    <div id = "manualSansButton">
+      <h2>How to play?</h2>
+      <ul>
+        <li>Double Click on connecting cats with the same color to earn points!</li>
+        <li>2 Cats = 1 Point</li>
+        <li>3 Cats and above = 2 Points</li>
+        <li>5 Cats and above = 3 Points</li>
+        <li>8 Cats and above = 5 Points</li>
+        <li>Accumulate at least 200 Points within a min to win!</li>
+      </ul>
+    </div>
  
     <div id="container">
       <nav id = "nav">
@@ -41,10 +56,10 @@
         </li>
         <li>Timer: <span id = "time-count"></span></li>
         </ul>
-        <ul>
-      <button class = "nav-button">Restart</button>
-      <div id = "manual-button"></div>
-    </ul><nav>
+        <ul id = "icons">
+      <button id = "nav-button">Restart</button>
+    <img src ="images/user-guide.png" id = "manualBook" alt="A manual book">
+    </ul></nav>
       <div id="board">
     
         </div>
@@ -57,7 +72,7 @@
         <button id = "replay">Replay</button>
       </div>
     </div>
-
+<footer>A Kitty Crush Game</footer>
     <script src="script.js"></script>
   </body>
 </html>
