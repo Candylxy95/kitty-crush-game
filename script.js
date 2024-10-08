@@ -11,6 +11,7 @@ const classArr = [
 ];
 let queueArr = [];
 let prevScoreArr = [];
+let comboArr = [];
 
 /*--- cached element-----*/
 const playButton = document.querySelector("#play");
@@ -91,6 +92,44 @@ function getCells(x, y) {
   return [cellAbove, cellBelow, cellLeft, cellRight];
 }
 
+function hoverBlock(e, colorClass) {
+  let targettedCell = e.target.parentElement;
+  let x = Number(targettedCell.dataset.x);
+  let y = Number(targettedCell.dataset.y);
+
+  const [cellAbove, cellBelow, cellLeft, cellRight] = getCells(x, y);
+
+  if (
+    (!cellAbove || !cellAbove.querySelector(colorClass)) &&
+    (!cellBelow || !cellBelow.querySelector(colorClass)) &&
+    (!cellLeft || !cellLeft.querySelector(colorClass)) &&
+    (!cellRight || !cellRight.querySelector(colorClass))
+  ) {
+    return;
+  }
+
+  comboArr.push(e.target);
+
+  if (cellAbove && cellAbove.querySelector(colorClass)) {
+    comboArr.push(cellAbove.querySelector(colorClass));
+  }
+
+  if (cellBelow && cellBelow.querySelector(colorClass)) {
+    comboArr.push(cellBelow.querySelector(colorClass));
+  }
+
+  if (cellLeft && cellLeft.querySelector(colorClass)) {
+    comboArr.push(cellLeft.querySelector(colorClass));
+  }
+
+  if (cellRight && cellRight.querySelector(colorClass)) {
+    comboArr.push(cellRight.querySelector(colorClass));
+  }
+
+  comboArr.forEach((elem) => {
+    elem.style.animation = "enlargeCats 2s 3";
+  });
+}
 //when clicked on colored block
 //if class list contains "block-blue" find the cellXY it is appended in
 function burstBlock(e, colorClass) {
@@ -378,6 +417,18 @@ playButton.addEventListener("click", () => {
   manual.style.display = "none";
   startTimer();
 });
+
+container.addEventListener("mouseover", (e) => {
+  const colorType = findColorType(e);
+  if (e.target.classList.contains(colorType)) {
+    //make it modular - contains the same classlist
+    findClass(colorType);
+    const colorClass = findClass(colorType);
+    hoverBlock(e, colorClass);
+  }
+});
+
+container.addEventListener("mouseout", () => {});
 
 container.addEventListener("dblclick", (e) => {
   const colorType = findColorType(e);
