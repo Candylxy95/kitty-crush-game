@@ -26,13 +26,21 @@ let endBoardScore = document.querySelector("#end-board-score");
 const victoryMsg = document.querySelector("#victory-msg");
 const replay = document.querySelector("#replay");
 const restart = document.querySelector("#nav-button");
+
+//declare Timer
 const timer = document.querySelector("#time-count");
 let timeCount = 60;
-let timeCounter = "";
+let timeCounter = ""; //var to clear interval
 timer.innerText = timeCount;
+
+//declare Sound effect
 let clickSound = new Audio(
   "../project-1-game/sound/mixkit-gear-fast-lock-tap-2857.wav"
 );
+let meowSound = new Audio(
+  "../project-1-game/sound/mixkit-sweet-kitty-meow-93.wav"
+);
+const muteButton = document.querySelector("#mute");
 
 const cellDiv = "";
 //populate container with cells
@@ -127,7 +135,7 @@ function hoverBlock(e, colorClass) {
   }
 
   comboArr.forEach((elem) => {
-    elem.style.animation = "enlargeCats 2s 3";
+    elem.style.animation = "enlargeCats 1s 1";
   });
 }
 //when clicked on colored block
@@ -171,6 +179,8 @@ function burstBlock(e, colorClass) {
     cellRight.querySelector(colorClass).remove();
     queueArr.push(cellRight);
   }
+
+  addMeowSound();
 }
 
 function burstMoreBlocks(colorClass) {
@@ -204,10 +214,6 @@ function burstMoreBlocks(colorClass) {
       queueArr.push(cellRight);
     }
   }
-  let mySound = new Audio(
-    "../project-1-game/sound/mixkit-sweet-kitty-meow-93.wav"
-  );
-  mySound.play();
 }
 
 let emptiedCells = [];
@@ -406,14 +412,34 @@ function toggleManual() {
   } else manualSansButton.style.display = "none";
 }
 
+function toggleSound() {
+  if (muteButton.innerText === "Sound Off") {
+    muteButton.innerText = "Sound On";
+  } else {
+    muteButton.innerText = "Sound Off";
+  }
+}
+
+function addClickSound() {
+  if (muteButton.innerText === "Sound On") {
+    clickSound.play();
+  }
+}
+
+function addMeowSound() {
+  if (muteButton.innerText === "Sound On") {
+    meowSound.play();
+  }
+}
+
 init();
 
 playButton.addEventListener("mouseover", () => {
-  clickSound.play();
+  addClickSound();
 });
 
 playButton.addEventListener("click", () => {
-  clickSound.play();
+  addClickSound();
   manual.style.display = "none";
   startTimer();
 });
@@ -427,8 +453,6 @@ container.addEventListener("mouseover", (e) => {
     hoverBlock(e, colorClass);
   }
 });
-
-container.addEventListener("mouseout", () => {});
 
 container.addEventListener("dblclick", (e) => {
   const colorType = findColorType(e);
@@ -449,23 +473,29 @@ container.addEventListener("dblclick", (e) => {
     didYouWin();
   }
 });
-replay.addEventListener("mouseover", () => clickSound.play());
+replay.addEventListener("mouseover", () => {
+  addClickSound();
+});
 
 replay.addEventListener("click", () => {
-  clickSound.play();
   init();
+  addClickSound();
   startTimer();
 });
 
-restart.addEventListener("mouseover", () => clickSound.play());
+restart.addEventListener("mouseover", () => {
+  addClickSound();
+});
 
 restart.addEventListener("click", () => {
-  clickSound.play();
   init();
+  addClickSound();
   startTimer();
 });
 
 manualBook.addEventListener("click", () => {
-  clickSound.play();
+  addClickSound();
   toggleManual();
 });
+
+muteButton.addEventListener("click", () => toggleSound());
