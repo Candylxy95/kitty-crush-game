@@ -12,6 +12,7 @@ const classArr = [
 let queuesArr = [];
 let prevScoresArr = [];
 let combosArr = [];
+let checksArr = [];
 
 /*--- cached element-----*/
 const playButton = document.querySelector("#play");
@@ -92,7 +93,7 @@ function findColorType(e) {
 function findClass(colorType) {
   return "." + colorType;
 }
-
+//retrieve dataset of any cell
 function getCells(x, y) {
   const cellAbove = getCell(x - 1, y);
   const cellBelow = getCell(x + 1, y);
@@ -101,56 +102,15 @@ function getCells(x, y) {
 
   return [cellAbove, cellBelow, cellLeft, cellRight];
 }
-
-function hoverBlock(e, colorClass) {
-  let targettedCell = e.target.parentElement;
-  let x = Number(targettedCell.dataset.x);
-  let y = Number(targettedCell.dataset.y);
-
-  const [cellAbove, cellBelow, cellLeft, cellRight] = getCells(x, y);
-
-  if (
-    (!cellAbove || !cellAbove.querySelector(colorClass)) &&
-    (!cellBelow || !cellBelow.querySelector(colorClass)) &&
-    (!cellLeft || !cellLeft.querySelector(colorClass)) &&
-    (!cellRight || !cellRight.querySelector(colorClass))
-  ) {
-    return;
-  }
-
-  combosArr.push(e.target);
-
-  if (cellAbove && cellAbove.querySelector(colorClass)) {
-    combosArr.push(cellAbove.querySelector(colorClass));
-  }
-
-  if (cellBelow && cellBelow.querySelector(colorClass)) {
-    combosArr.push(cellBelow.querySelector(colorClass));
-  }
-
-  if (cellLeft && cellLeft.querySelector(colorClass)) {
-    combosArr.push(cellLeft.querySelector(colorClass));
-  }
-
-  if (cellRight && cellRight.querySelector(colorClass)) {
-    combosArr.push(cellRight.querySelector(colorClass));
-  }
-
-  combosArr.forEach((elem) => {
-    elem.style.animation = "enlargeCats 1s 1";
-  });
-}
 //when clicked on colored block
-//if class list contains "block-blue" find the cellXY it is appended in
-function burstBlock(e, colorClass) {
+//if class list contains "eg. block-blue" find the cellXY it is appended in (first round of check on target)
+function groupBlock(e, colorClass) {
   let targettedCell = e.target.parentElement;
   let x = Number(targettedCell.dataset.x);
   let y = Number(targettedCell.dataset.y);
-  //BEEFORE REMOVING - check the areas!!!!
-  //make a modular code -> remove everythign that is grouped!
 
   const [cellAbove, cellBelow, cellLeft, cellRight] = getCells(x, y);
-
+  //if single cell return.
   if (
     (!cellAbove || !cellAbove.querySelector(colorClass)) &&
     (!cellBelow || !cellBelow.querySelector(colorClass)) &&
@@ -160,62 +120,86 @@ function burstBlock(e, colorClass) {
     return;
   }
 
-  e.target.remove();
+  combosArr.push(e.target.parentElement);
 
   if (cellAbove && cellAbove.querySelector(colorClass)) {
-    cellAbove.querySelector(colorClass).remove();
-    queuesArr.push(cellAbove);
+    checksArr.push(cellAbove);
   }
 
   if (cellBelow && cellBelow.querySelector(colorClass)) {
-    cellBelow.querySelector(colorClass).remove();
-    queuesArr.push(cellBelow);
+    checksArr.push(cellBelow);
   }
 
   if (cellLeft && cellLeft.querySelector(colorClass)) {
-    cellLeft.querySelector(colorClass).remove();
-    queuesArr.push(cellLeft);
+    checksArr.push(cellLeft);
   }
 
   if (cellRight && cellRight.querySelector(colorClass)) {
-    cellRight.querySelector(colorClass).remove();
-    queuesArr.push(cellRight);
+    checksArr.push(cellRight);
   }
-
-  addMeowSound();
 }
-
-function burstMoreBlocks(colorClass) {
-  while (queuesArr.length > 0) {
-    let secCell = queuesArr.shift();
-
+//locate same classes of elements in the queuesArray
+function groupSecBlock(colorClass) {
+  while (checksArr.length > 0) {
+    let secCell = checksArr.shift();
+    console.log(checksArr);
     const x = Number(secCell.dataset.x);
     const y = Number(secCell.dataset.y);
 
     const [cellAbove, cellBelow, cellLeft, cellRight] = getCells(x, y);
 
-    if (cellAbove && cellAbove.querySelector(colorClass)) {
-      cellAbove.querySelector(colorClass).remove();
-      queuesArr.push(cellAbove);
+    if (
+      cellAbove &&
+      cellAbove.querySelector(colorClass) &&
+      !combosArr.includes(cellAbove)
+    ) {
+      checksArr.push(cellAbove);
     }
 
-    if (cellBelow && cellBelow.querySelector(colorClass)) {
-      cellBelow.querySelector(colorClass).remove();
-      queuesArr.push(cellBelow);
+    if (
+      cellBelow &&
+      cellBelow.querySelector(colorClass) &&
+      !combosArr.includes(cellBelow)
+    ) {
+      checksArr.push(cellBelow);
     }
 
-    if (cellLeft && cellLeft.querySelector(colorClass)) {
-      cellLeft.querySelector(colorClass).remove();
-      queuesArr.push(cellLeft);
+    if (
+      cellLeft &&
+      cellLeft.querySelector(colorClass) &&
+      !combosArr.includes(cellLeft)
+    ) {
+      checksArr.push(cellLeft);
     }
 
-    if (cellRight && cellRight.querySelector(colorClass)) {
-      cellRight.querySelector(colorClass).remove();
-      queuesArr.push(cellRight);
+    if (
+      cellRight &&
+      cellRight.querySelector(colorClass) &&
+      !combosArr.includes(cellRight)
+    ) {
+      checksArr.push(cellRight);
     }
+    combosArr.push(secCell);
   }
+  console.log(combosArr);
 }
 
+function hoverAnimation() {
+  for (const elem of combosArr) {
+    elem.style.animation = "enlargeCats 2s 1";
+  }
+  combosArr.length = 0;
+}
+
+function removeBlocks() {
+  for (const elem of combosArr) {
+    elem.innerHTML = "";
+  }
+  addMeowSound();
+  combosArr.length = 0;
+}
+
+//find all the empty cells
 let emptiedCells = [];
 function grabEmptyCells() {
   //scan for empty cells
@@ -258,6 +242,7 @@ function fillEmptyCells() {
   }
 }
 
+//check if there is any empty column
 function checkAndCollapseGap() {
   let y = 10;
 
@@ -280,6 +265,7 @@ function checkAndCollapseGap() {
   }
 }
 
+//fill up column by shifting all blocks to the right.
 function collapseGap(yvalue) {
   for (x = 1; x < 11; x++) {
     for (y = 1; y < yvalue; y++) {
@@ -341,13 +327,15 @@ function scanForWin() {
   appCellArr = [];
 }
 
+//subtract no. of previous empty blocks with no. of current empty blocks to see how many block's bursted in a round
+//calculate points base on combos
 function scoreSystem() {
   let currScoresArr = []; //length of total scoreArray
   let points = "";
   //length scoreArray before it is appended with new blocks from this round (an unupdated);
 
   //onclick - 2 cats = 1 point
-  //scan cells to see how many cats have been removed each round - accumulative...
+  //scan cells to see how many cats have been removed each round..
   for (let x = 1; x < 11; x++) {
     for (let y = 1; y < 11; y++) {
       //calculate cells not appended with blocks
@@ -376,12 +364,14 @@ function scoreSystem() {
   currScoresArr.length = 0;
 }
 
+//winning condition and incentives
 function didYouWin() {
   if (Number(endBoardScore.innerText) > 200) {
     victoryMsg.innerText = "CONGRATULATIONS! You've won!";
   } else victoryMsg.innerText = "Sorry, please try harder.";
 }
 
+//start timer and clear timer on each new round.
 function startTimer() {
   clearInterval(timeCounter);
 
@@ -440,24 +430,26 @@ playButton.addEventListener("click", () => {
   startTimer();
 });
 
-container.addEventListener("mouseover", (e) => {
+container.addEventListener("mouseout", (e) => {
   const colorType = findColorType(e);
   if (e.target.classList.contains(colorType)) {
     //make it modular - contains the same classlist
     findClass(colorType);
     const colorClass = findClass(colorType);
-    hoverBlock(e, colorClass);
+    groupBlock(e, colorClass);
+    groupSecBlock(colorClass);
+    hoverAnimation();
   }
 });
 
 container.addEventListener("dblclick", (e) => {
   const colorType = findColorType(e);
   if (e.target.classList.contains(colorType)) {
-    //make it modular - contains the same classlist
     findClass(colorType);
     const colorClass = findClass(colorType);
-    burstBlock(e, colorClass);
-    burstMoreBlocks(colorClass);
+    groupBlock(e, colorClass);
+    groupSecBlock(colorClass);
+    removeBlocks();
 
     grabEmptyCells();
     fillEmptyCells();
