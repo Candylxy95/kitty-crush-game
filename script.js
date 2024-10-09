@@ -9,9 +9,9 @@ const classArr = [
   "block-white",
   "block-black",
 ];
-let queueArr = [];
-let prevScoreArr = [];
-let comboArr = [];
+let queuesArr = [];
+let prevScoresArr = [];
+let combosArr = [];
 
 /*--- cached element-----*/
 const playButton = document.querySelector("#play");
@@ -26,6 +26,7 @@ let endBoardScore = document.querySelector("#end-board-score");
 const victoryMsg = document.querySelector("#victory-msg");
 const replay = document.querySelector("#replay");
 const restart = document.querySelector("#nav-button");
+const blockerWall = document.querySelector("#blocker-wall");
 
 //declare Timer
 const timer = document.querySelector("#time-count");
@@ -74,7 +75,6 @@ function everyCell() {
   for (let a = 1; a < 11; a++) {
     for (let b = 1; b < 11; b++) {
       let cell = getCell(a, b);
-      //document.querySelector(`.cell[data-x="${a}"][data-y="${b}"]`);
       if (cell && cell.childNodes.length === 0) {
         cell.appendChild(randomBlocks());
       }
@@ -82,11 +82,13 @@ function everyCell() {
   }
 }
 
+//return the className of the block
 function findColorType(e) {
   const color = classArr.filter((color) => color === e.target.className);
   return color.toString();
 }
 
+//return name in class form to be used w queryselector when checking for surrounding cells in burstBlock/hover functions
 function findClass(colorType) {
   return "." + colorType;
 }
@@ -116,25 +118,25 @@ function hoverBlock(e, colorClass) {
     return;
   }
 
-  comboArr.push(e.target);
+  combosArr.push(e.target);
 
   if (cellAbove && cellAbove.querySelector(colorClass)) {
-    comboArr.push(cellAbove.querySelector(colorClass));
+    combosArr.push(cellAbove.querySelector(colorClass));
   }
 
   if (cellBelow && cellBelow.querySelector(colorClass)) {
-    comboArr.push(cellBelow.querySelector(colorClass));
+    combosArr.push(cellBelow.querySelector(colorClass));
   }
 
   if (cellLeft && cellLeft.querySelector(colorClass)) {
-    comboArr.push(cellLeft.querySelector(colorClass));
+    combosArr.push(cellLeft.querySelector(colorClass));
   }
 
   if (cellRight && cellRight.querySelector(colorClass)) {
-    comboArr.push(cellRight.querySelector(colorClass));
+    combosArr.push(cellRight.querySelector(colorClass));
   }
 
-  comboArr.forEach((elem) => {
+  combosArr.forEach((elem) => {
     elem.style.animation = "enlargeCats 1s 1";
   });
 }
@@ -162,32 +164,30 @@ function burstBlock(e, colorClass) {
 
   if (cellAbove && cellAbove.querySelector(colorClass)) {
     cellAbove.querySelector(colorClass).remove();
-    queueArr.push(cellAbove);
+    queuesArr.push(cellAbove);
   }
 
   if (cellBelow && cellBelow.querySelector(colorClass)) {
     cellBelow.querySelector(colorClass).remove();
-    queueArr.push(cellBelow);
+    queuesArr.push(cellBelow);
   }
 
   if (cellLeft && cellLeft.querySelector(colorClass)) {
     cellLeft.querySelector(colorClass).remove();
-    queueArr.push(cellLeft);
+    queuesArr.push(cellLeft);
   }
 
   if (cellRight && cellRight.querySelector(colorClass)) {
     cellRight.querySelector(colorClass).remove();
-    queueArr.push(cellRight);
+    queuesArr.push(cellRight);
   }
 
   addMeowSound();
 }
 
 function burstMoreBlocks(colorClass) {
-  //let newQueueArr = []; //init
-  while (queueArr.length > 0) {
-    //queueArr.forEach((secCell) => {
-    let secCell = queueArr.shift();
+  while (queuesArr.length > 0) {
+    let secCell = queuesArr.shift();
 
     const x = Number(secCell.dataset.x);
     const y = Number(secCell.dataset.y);
@@ -196,22 +196,22 @@ function burstMoreBlocks(colorClass) {
 
     if (cellAbove && cellAbove.querySelector(colorClass)) {
       cellAbove.querySelector(colorClass).remove();
-      queueArr.push(cellAbove);
+      queuesArr.push(cellAbove);
     }
 
     if (cellBelow && cellBelow.querySelector(colorClass)) {
       cellBelow.querySelector(colorClass).remove();
-      queueArr.push(cellBelow);
+      queuesArr.push(cellBelow);
     }
 
     if (cellLeft && cellLeft.querySelector(colorClass)) {
       cellLeft.querySelector(colorClass).remove();
-      queueArr.push(cellLeft);
+      queuesArr.push(cellLeft);
     }
 
     if (cellRight && cellRight.querySelector(colorClass)) {
       cellRight.querySelector(colorClass).remove();
-      queueArr.push(cellRight);
+      queuesArr.push(cellRight);
     }
   }
 }
@@ -229,9 +229,7 @@ function grabEmptyCells() {
         let x = Number(cell.dataset.x);
         let y = Number(cell.dataset.y);
         emptiedCells.push(getCell(x, y)); //get cells with no child
-      } /*else {
-        console.log(`no empty cells found`);
-      } */
+      }
     }
   }
   //find cells with the same Yaxis but smalle X axis that contains child.
@@ -329,15 +327,14 @@ function scanForWin() {
         cellRight.firstChild &&
         cellRight.firstChild.className === testCell.firstChild.className)
     ) {
-      console.log("game continues");
       return true;
     }
     return false;
   });
 
   if (!matchingBlocks) {
-    console.log("gameOver");
     endBoard.style.display = "block";
+    blockerWall.style.display = "block";
     clearInterval(timeCounter);
   }
 
@@ -345,7 +342,7 @@ function scanForWin() {
 }
 
 function scoreSystem() {
-  let currScoreArr = []; //length of total scoreArray
+  let currScoresArr = []; //length of total scoreArray
   let points = "";
   //length scoreArray before it is appended with new blocks from this round (an unupdated);
 
@@ -356,13 +353,13 @@ function scoreSystem() {
       //calculate cells not appended with blocks
       let cell = getCell(x, y);
       if (cell && !cell.hasChildNodes()) {
-        currScoreArr.push(cell); //get the length of total unappended blocks minus previously unappended blocks.
+        currScoresArr.push(cell); //get the length of total unappended blocks minus previously unappended blocks.
       }
     }
   }
 
-  let prevScore = prevScoreArr.reduce((acc, num) => acc + num, 0);
-  points = currScoreArr.length - prevScore; //SUM OF PREVSCORE ARR.
+  let prevScore = prevScoresArr.reduce((acc, num) => acc + num, 0);
+  points = currScoresArr.length - prevScore; //SUM OF PREVSCORE ARR.
 
   //push the total num of everything that was deleted into calScore Arr.
   if (points === 2) {
@@ -375,8 +372,8 @@ function scoreSystem() {
     score.innerText = Number(score.innerText) + points * 5;
   }
   endBoardScore.innerText = score.innerText;
-  prevScoreArr.push(Number(points)); //stores the number of blocks cleared each round.
-  currScoreArr.length = 0;
+  prevScoresArr.push(Number(points)); //stores the number of blocks cleared each round.
+  currScoresArr.length = 0;
 }
 
 function didYouWin() {
@@ -432,8 +429,6 @@ function addMeowSound() {
   }
 }
 
-init();
-
 playButton.addEventListener("mouseover", () => {
   addClickSound();
 });
@@ -441,6 +436,7 @@ playButton.addEventListener("mouseover", () => {
 playButton.addEventListener("click", () => {
   addClickSound();
   manual.style.display = "none";
+  blockerWall.style.display = "none";
   startTimer();
 });
 
@@ -479,6 +475,7 @@ replay.addEventListener("mouseover", () => {
 
 replay.addEventListener("click", () => {
   init();
+  blockerWall.style.display = "none";
   addClickSound();
   startTimer();
 });
@@ -499,3 +496,5 @@ manualBook.addEventListener("click", () => {
 });
 
 muteButton.addEventListener("click", () => toggleSound());
+
+init();

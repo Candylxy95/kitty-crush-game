@@ -194,6 +194,7 @@ li {
 #instructions,
 #end-board,
 #manualSansButton {
+  z-index: 1;
   position: absolute;
   top: 350px;
   width: 600px;
@@ -203,6 +204,14 @@ li {
   text-align: center;
   border-radius: 20px;
   border: 10px solid var(--lblue);
+}
+
+#blocker-wall {
+  z-index: 0;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0);
 }
 
 #play,
