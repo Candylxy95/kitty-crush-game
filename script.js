@@ -187,16 +187,18 @@ function groupSecBlock(colorClass) {
 
 function hoverAnimation() {
   for (const elem of combosArr) {
-    elem.style.animation = "enlargeCats 2s 1";
+    elem.style.animation = "enlargeCats 1s 1";
   }
   combosArr.length = 0;
 }
 
 function removeBlocks() {
+  if (combosArr.length > 1) {
+    addMeowSound();
+  }
   for (const elem of combosArr) {
     elem.innerHTML = "";
   }
-  addMeowSound();
   combosArr.length = 0;
 }
 
@@ -371,7 +373,10 @@ function didYouWin() {
   if (Number(endBoardScore.innerText) >= 200) {
     victoryMsg.innerText = "CONGRATULATIONS! You've won!";
     victoryCat.src = "../project-1-game/images/Winning-cat.png";
-  } else victoryMsg.innerText = "Sorry, please try harder.";
+  } else if (Number(endBoardScore.innerText) < 200) {
+    victoryMsg.innerText = "Sorry, please try harder.";
+    victoryCat.src = "../project-1-game/images/Blue-cat-crying.png";
+  }
 }
 
 //start timer and clear timer on each new round.
@@ -392,8 +397,10 @@ function init() {
   everyCell();
   endBoard.style.display = "none";
   manualSansButton.style.display = "none";
+  prevScoresArr = [];
   score.innerText = 0;
   timeCount = 60;
+  startTimer();
 }
 
 function toggleManual() {
@@ -422,6 +429,8 @@ function addMeowSound() {
   }
 }
 
+/*----event listeners---*/
+
 playButton.addEventListener("mouseover", () => {
   addClickSound();
 });
@@ -433,15 +442,27 @@ playButton.addEventListener("click", () => {
   startTimer();
 });
 
+container.addEventListener("mouseover", (e) => {
+  const colorType = findColorType(e);
+  if (e.target.classList.contains(colorType)) {
+    //make it modular - contains the same classlist
+    findClass(colorType);
+    const colorClass = findClass(colorType);
+    delayHover = setTimeout(() => {
+      groupBlock(e, colorClass);
+      groupSecBlock(colorClass);
+      hoverAnimation();
+    }, 400);
+  }
+});
+
 container.addEventListener("mouseout", (e) => {
   const colorType = findColorType(e);
   if (e.target.classList.contains(colorType)) {
     //make it modular - contains the same classlist
     findClass(colorType);
     const colorClass = findClass(colorType);
-    groupBlock(e, colorClass);
-    groupSecBlock(colorClass);
-    hoverAnimation();
+    clearTimeout(delayHover);
   }
 });
 
@@ -464,6 +485,7 @@ container.addEventListener("dblclick", (e) => {
     didYouWin();
   }
 });
+
 replay.addEventListener("mouseover", () => {
   addClickSound();
 });
@@ -472,7 +494,6 @@ replay.addEventListener("click", () => {
   init();
   blockerWall.style.display = "none";
   addClickSound();
-  startTimer();
 });
 
 restart.addEventListener("mouseover", () => {
@@ -482,7 +503,6 @@ restart.addEventListener("mouseover", () => {
 restart.addEventListener("click", () => {
   init();
   addClickSound();
-  startTimer();
 });
 
 manualBook.addEventListener("click", () => {
