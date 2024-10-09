@@ -400,7 +400,6 @@ function init() {
   prevScoresArr = [];
   score.innerText = 0;
   timeCount = 60;
-  startTimer();
 }
 
 function toggleManual() {
@@ -494,6 +493,7 @@ replay.addEventListener("click", () => {
   init();
   blockerWall.style.display = "none";
   addClickSound();
+  startTimer();
 });
 
 restart.addEventListener("mouseover", () => {
@@ -503,6 +503,7 @@ restart.addEventListener("mouseover", () => {
 restart.addEventListener("click", () => {
   init();
   addClickSound();
+  startTimer();
 });
 
 manualBook.addEventListener("click", () => {
