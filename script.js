@@ -28,6 +28,8 @@ const victoryMsg = document.querySelector("#victory-msg");
 const replay = document.querySelector("#replay");
 const restart = document.querySelector("#nav-button");
 const blockerWall = document.querySelector("#blocker-wall");
+let gridSize = 11; //11 - 1 = 10
+const victoryCat = document.querySelector("#victory-cat");
 
 //declare Timer
 const timer = document.querySelector("#time-count");
@@ -42,12 +44,13 @@ let clickSound = new Audio(
 let meowSound = new Audio(
   "../project-1-game/sound/mixkit-sweet-kitty-meow-93.wav"
 );
+
 const muteButton = document.querySelector("#mute");
 
 const cellDiv = "";
 //populate container with cells
-for (let x = 1; x < 11; x++) {
-  for (let y = 1; y < 11; y++) {
+for (let x = 1; x < gridSize; x++) {
+  for (let y = 1; y < gridSize; y++) {
     const cellDiv = document.createElement("div");
     cellDiv.classList.add("cell");
     board.appendChild(cellDiv);
@@ -73,8 +76,8 @@ function randomBlocks() {
 
 //function to select every single cell & append block
 function everyCell() {
-  for (let a = 1; a < 11; a++) {
-    for (let b = 1; b < 11; b++) {
+  for (let a = 1; a < gridSize; a++) {
+    for (let b = 1; b < gridSize; b++) {
       let cell = getCell(a, b);
       if (cell && cell.childNodes.length === 0) {
         cell.appendChild(randomBlocks());
@@ -142,7 +145,6 @@ function groupBlock(e, colorClass) {
 function groupSecBlock(colorClass) {
   while (checksArr.length > 0) {
     let secCell = checksArr.shift();
-    console.log(checksArr);
     const x = Number(secCell.dataset.x);
     const y = Number(secCell.dataset.y);
 
@@ -181,7 +183,6 @@ function groupSecBlock(colorClass) {
     }
     combosArr.push(secCell);
   }
-  console.log(combosArr);
 }
 
 function hoverAnimation() {
@@ -205,8 +206,8 @@ function grabEmptyCells() {
   //scan for empty cells
   //capture its dataset x & y (eg, x = 8, y = 4)
   emptiedCells = [];
-  for (let a = 0; a < 11; a++) {
-    for (let b = 0; b < 11; b++) {
+  for (let a = 0; a < gridSize; a++) {
+    for (let b = 0; b < gridSize; b++) {
       const cell = getCell(a, b);
 
       if (cell && cell.childNodes.length === 0) {
@@ -229,6 +230,7 @@ function fillEmptyCells() {
     //check if cells on y4 with X axis smaller than 8 contains blocks?
     //check if cell on the same Y with <X contains blocks.
 
+    //check whatevr is on top for cells w childnodes
     for (let a = x - 1; a >= 1; a--) {
       //loop through to find nearest Xcell with child node
       let upperCell = getCell(a, y);
@@ -248,7 +250,7 @@ function checkAndCollapseGap() {
 
   while (y > 0) {
     let columnArr = [];
-    for (let x = 1; x < 11; x++) {
+    for (let x = 1; x < gridSize; x++) {
       const cell = getCell(x, y);
       if (cell) {
         columnArr.push(getCell(x, y));
@@ -267,7 +269,7 @@ function checkAndCollapseGap() {
 
 //fill up column by shifting all blocks to the right.
 function collapseGap(yvalue) {
-  for (x = 1; x < 11; x++) {
+  for (x = 1; x < gridSize; x++) {
     for (y = 1; y < yvalue; y++) {
       const cell = getCell(x, y);
       if (cell && cell.hasChildNodes()) {
@@ -284,8 +286,8 @@ function scanForWin() {
   //loop through each cell with childNodes
   // loop through each colorClass to check 4 surroundings
   let appCellArr = [];
-  for (let x = 1; x < 11; x++) {
-    for (let y = 1; y < 11; y++) {
+  for (let x = 1; x < gridSize; x++) {
+    for (let y = 1; y < gridSize; y++) {
       const cell = getCell(x, y);
       if (cell && cell.childNodes.length > 0) {
         appCellArr.push(cell);
@@ -336,8 +338,8 @@ function scoreSystem() {
 
   //onclick - 2 cats = 1 point
   //scan cells to see how many cats have been removed each round..
-  for (let x = 1; x < 11; x++) {
-    for (let y = 1; y < 11; y++) {
+  for (let x = 1; x < gridSize; x++) {
+    for (let y = 1; y < gridSize; y++) {
       //calculate cells not appended with blocks
       let cell = getCell(x, y);
       if (cell && !cell.hasChildNodes()) {
@@ -366,8 +368,9 @@ function scoreSystem() {
 
 //winning condition and incentives
 function didYouWin() {
-  if (Number(endBoardScore.innerText) > 200) {
+  if (Number(endBoardScore.innerText) >= 200) {
     victoryMsg.innerText = "CONGRATULATIONS! You've won!";
+    victoryCat.src = "../project-1-game/images/Winning-cat.png";
   } else victoryMsg.innerText = "Sorry, please try harder.";
 }
 

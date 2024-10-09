@@ -316,6 +316,11 @@ header {
   animation: enlargeCloud 10s infinite;
 }
 
+#victory-cat {
+  width: 150px;
+  height: auto;
+}
+
 #manualBook:hover {
   filter: saturate(20);
 }
