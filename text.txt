@@ -1,3 +1,4 @@
+Pseudo Code
 1. Create board filled with cells through X & Y axis 
 
 2. Randomly populate cells with 5 different colored blocks
@@ -36,6 +37,7 @@ Stretch goals
 2) Timer
 3) Score
 
+references
 https://developer.mozilla.org/en-US/docs/Web/API/Element/children
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift
 

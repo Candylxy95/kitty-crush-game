@@ -14,10 +14,10 @@
 
 @keyframes moveCloudsL {
   from {
-    left: -30%;
+    left: -10%;
   }
   to {
-    left: 100%;
+    left: 80%;
   }
 }
 
@@ -32,10 +32,10 @@
 
 @keyframes moveCloudsM {
   from {
-    left: 0%;
+    left: -10%;
   }
   to {
-    left: 100%;
+    left: 80%;
   }
 }
 
@@ -63,21 +63,12 @@
   }
 }
 
-@keyframes delargeCats {
+@keyframes reappear {
   0% {
-    transform: scale(1.2);
+    opacity: 0.5;
   }
   100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes disappear {
-  0% {
     opacity: 1;
-  }
-  100% {
-    opacity: 0;
   }
 }
 
@@ -94,6 +85,7 @@ body {
   font-size: 20px;
   min-height: 100vh;
   width: 100vw;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -250,7 +242,8 @@ li {
 }
 
 #nav-button,
-#mute {
+#mute,
+#mode {
   background-color: var(--beige);
   height: 40px;
   border-radius: 10px;
@@ -260,7 +253,8 @@ li {
 }
 
 #nav-button:hover,
-#mute:hover {
+#mute:hover,
+#mode:hover {
   background-color: var(--black);
   border: 5px solid var(--orange);
   color: var(--linen);
@@ -301,9 +295,9 @@ li {
 
 #cloud4 {
   width: 40%;
-  left: 400px;
+  left: 500px;
   bottom: 0px;
-  animation: moveCloudsM 40s infinite linear;
+  animation: moveCloudsM 30s infinite linear;
 }
 
 header {
@@ -327,5 +321,5 @@ header {
 }
 
 footer {
-  color: var(--white);
+  color: var(--gray);
 }

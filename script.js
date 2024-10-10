@@ -9,7 +9,6 @@ const classArr = [
   "block-white",
   "block-black",
 ];
-let queuesArr = [];
 let prevScoresArr = [];
 let combosArr = [];
 let checksArr = [];
@@ -48,7 +47,7 @@ let meowSound = new Audio(
 const muteButton = document.querySelector("#mute");
 
 const cellDiv = "";
-//populate container with cells
+//populate container with div cells by creating 100 of it and appending to the board
 for (let x = 1; x < gridSize; x++) {
   for (let y = 1; y < gridSize; y++) {
     const cellDiv = document.createElement("div");
@@ -74,7 +73,7 @@ function randomBlocks() {
   return block;
 }
 
-//function to select every single cell & append block
+//function to select every single cell & append a random colored block to it
 function everyCell() {
   for (let a = 1; a < gridSize; a++) {
     for (let b = 1; b < gridSize; b++) {
@@ -86,7 +85,8 @@ function everyCell() {
   }
 }
 
-//return the className of the block
+//return the className of the block used with bubbling event listener to make sure only blocks can be clicked
+// only elements that matches the strings in classArr can be clicked
 function findColorType(e) {
   const color = classArr.filter((color) => color === e.target.className);
   return color.toString();
@@ -106,14 +106,14 @@ function getCells(x, y) {
   return [cellAbove, cellBelow, cellLeft, cellRight];
 }
 //when clicked on colored block
-//if class list contains "eg. block-blue" find the cellXY it is appended in (first round of check on target)
+//if class list contains "eg. block-blue" find the cell coordinate it is appended in (first round of check on target)
 function groupBlock(e, colorClass) {
-  let targettedCell = e.target.parentElement;
-  let x = Number(targettedCell.dataset.x);
+  let targettedCell = e.target.parentElement; //when click on block - find the cell(parent element) it is appended in
+  let x = Number(targettedCell.dataset.x); //let x & y be the targetted cell's coordinate
   let y = Number(targettedCell.dataset.y);
 
   const [cellAbove, cellBelow, cellLeft, cellRight] = getCells(x, y);
-  //if single cell return.
+  //if there is no cells of connecting classses, return.
   if (
     (!cellAbove || !cellAbove.querySelector(colorClass)) &&
     (!cellBelow || !cellBelow.querySelector(colorClass)) &&
@@ -123,7 +123,8 @@ function groupBlock(e, colorClass) {
     return;
   }
 
-  combosArr.push(e.target.parentElement);
+  combosArr.push(e.target.parentElement); //push the targetted cell coordinate into comboArr
+  //check it's four surroundings for connecting cells and push it into a diff arr : checksArr
 
   if (cellAbove && cellAbove.querySelector(colorClass)) {
     checksArr.push(cellAbove);
@@ -141,21 +142,22 @@ function groupBlock(e, colorClass) {
     checksArr.push(cellRight);
   }
 }
-//locate same classes of elements in the queuesArray
+
 function groupSecBlock(colorClass) {
+  //check each element in the checksArr by shifting the first element into a variable called secCell aka secondary cell
   while (checksArr.length > 0) {
     let secCell = checksArr.shift();
     const x = Number(secCell.dataset.x);
     const y = Number(secCell.dataset.y);
-
+    //grab its coordinates and check its surrounding cells if they are appended with the same class-color.
     const [cellAbove, cellBelow, cellLeft, cellRight] = getCells(x, y);
 
     if (
       cellAbove &&
       cellAbove.querySelector(colorClass) &&
-      !combosArr.includes(cellAbove)
+      !combosArr.includes(cellAbove) //make sure it does not grab the same cell
     ) {
-      checksArr.push(cellAbove);
+      checksArr.push(cellAbove); //if connecting class-color exists push the cell into checksArr to be rechecked.
     }
 
     if (
@@ -181,10 +183,10 @@ function groupSecBlock(colorClass) {
     ) {
       checksArr.push(cellRight);
     }
-    combosArr.push(secCell);
-  }
+    combosArr.push(secCell); //after checking each secCell, push it to the comboArr to be grouped.
+  } //while loop continues until there is nothing left in the checksArr.
 }
-
+//every cats in the combosArr enlarge on hover & clear combosArr after
 function hoverAnimation() {
   for (const elem of combosArr) {
     elem.style.animation = "enlargeCats 1s 1";
@@ -192,6 +194,7 @@ function hoverAnimation() {
   combosArr.length = 0;
 }
 
+//unappend all the cats in the cells coordinates that exists in the comboArr.
 function removeBlocks() {
   if (combosArr.length > 1) {
     addMeowSound();
@@ -202,44 +205,42 @@ function removeBlocks() {
   combosArr.length = 0;
 }
 
-//find all the empty cells
+//function to find all empty cells - (used with fillEmptyCells function) so that top blocks will fall to fill up emptyCells below.
 let emptiedCells = [];
 function grabEmptyCells() {
-  //scan for empty cells
-  //capture its dataset x & y (eg, x = 8, y = 4)
+  //scan through entire cells
   emptiedCells = [];
   for (let a = 0; a < gridSize; a++) {
     for (let b = 0; b < gridSize; b++) {
       const cell = getCell(a, b);
 
       if (cell && cell.childNodes.length === 0) {
+        //if cell is true and is not appended with blocks
         let x = Number(cell.dataset.x);
         let y = Number(cell.dataset.y);
-        emptiedCells.push(getCell(x, y)); //get cells with no child
+        emptiedCells.push(getCell(x, y)); //store these cells into an EmptiedCellsarray
       }
     }
   }
-  //find cells with the same Yaxis but smalle X axis that contains child.
 }
+//find cells with the same Yaxis but smaller X axis that contains child. (smaller X axis = cells at the top)
 //if cell is empty and cell above contains childBlock
 function fillEmptyCells() {
   while (emptiedCells.length > 0) {
-    let emptyCell = emptiedCells.pop(); //pass the last element to be "checked"
-    //last element has the largest X value
+    //as long as there are emptiedCells in the array - do this
+    let emptyCell = emptiedCells.pop(); //pass the last element to be "checked" as last element has the largest X value
     let x = Number(emptyCell.dataset.x);
     let y = Number(emptyCell.dataset.y);
-    //blocks on higher X axis (smaller numbers) will fall to lower (larger number)
-    //check if cells on y4 with X axis smaller than 8 contains blocks?
-    //check if cell on the same Y with <X contains blocks.
 
-    //check whatevr is on top for cells w childnodes
+    //check whatevr is on top of the empty cells w childnodes all the way to the top cell (decreasing X value order)
     for (let a = x - 1; a >= 1; a--) {
       //loop through to find nearest Xcell with child node
-      let upperCell = getCell(a, y);
+      let upperCell = getCell(a, y); //since we are checking column Y remains the same
       if (upperCell && upperCell.hasChildNodes()) {
-        const fallingBlock = upperCell.removeChild(upperCell.firstChild);
+        const fallingBlock = upperCell.removeChild(upperCell.firstChild); //remove blocks from (cells appended with blocks on top of empty cells)
         emptiedCells.push(upperCell);
-        getCell(x, y).appendChild(fallingBlock);
+        getCell(x, y).appendChild(fallingBlock); //append them to the empty cells below.
+        fallingBlock.style.animation = "reappear 1s 1";
         break;
       }
     }
@@ -249,7 +250,7 @@ function fillEmptyCells() {
 //check if there is any empty column
 function checkAndCollapseGap() {
   let y = 10;
-
+  //check through all ten column of cells
   while (y > 0) {
     let columnArr = [];
     for (let x = 1; x < gridSize; x++) {
@@ -441,26 +442,27 @@ playButton.addEventListener("click", () => {
   startTimer();
 });
 
+let delayHover = null;
+
 container.addEventListener("mouseover", (e) => {
   const colorType = findColorType(e);
   if (e.target.classList.contains(colorType)) {
     //make it modular - contains the same classlist
-    findClass(colorType);
     const colorClass = findClass(colorType);
-    delayHover = setTimeout(() => {
-      groupBlock(e, colorClass);
-      groupSecBlock(colorClass);
-      hoverAnimation();
-    }, 400);
+
+    if (e.target.classList.contains(colorType)) {
+      delayHover = setTimeout(() => {
+        groupBlock(e, colorClass);
+        groupSecBlock(colorClass);
+        hoverAnimation();
+      }, 400);
+    }
   }
 });
 
 container.addEventListener("mouseout", (e) => {
   const colorType = findColorType(e);
   if (e.target.classList.contains(colorType)) {
-    //make it modular - contains the same classlist
-    findClass(colorType);
-    const colorClass = findClass(colorType);
     clearTimeout(delayHover);
   }
 });
@@ -468,6 +470,8 @@ container.addEventListener("mouseout", (e) => {
 container.addEventListener("dblclick", (e) => {
   const colorType = findColorType(e);
   if (e.target.classList.contains(colorType)) {
+    //make sure you can only click on block element within classArr
+
     findClass(colorType);
     const colorClass = findClass(colorType);
     groupBlock(e, colorClass);
