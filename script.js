@@ -401,6 +401,10 @@ function init() {
   prevScoresArr = [];
   score.innerText = 0;
   timeCount = 60;
+  //
+  if (mode.innerText === "Light") {
+    nightMode(); // Ensure that dark mode settings are applied after reset
+  }
 }
 
 function toggleManual() {
@@ -410,21 +414,21 @@ function toggleManual() {
 }
 
 function toggleSound() {
-  if (muteButton.innerText === "Sound Off") {
-    muteButton.innerText = "Sound On";
-  } else {
+  if (muteButton.innerText === "Sound On") {
     muteButton.innerText = "Sound Off";
+  } else {
+    muteButton.innerText = "Sound On";
   }
 }
 
 function addClickSound() {
-  if (muteButton.innerText === "Sound On") {
+  if (muteButton.innerText === "Sound Off") {
     clickSound.play();
   }
 }
 
 function addMeowSound() {
-  if (muteButton.innerText === "Sound On") {
+  if (muteButton.innerText === "Sound Off") {
     meowSound.play();
   }
 }
@@ -498,6 +502,10 @@ replay.addEventListener("click", () => {
   blockerWall.style.display = "none";
   addClickSound();
   startTimer();
+  //
+  if (mode.innerText === "Light") {
+    nightMode(); // Ensure that dark mode settings are applied after reset
+  }
 });
 
 restart.addEventListener("mouseover", () => {
@@ -508,6 +516,10 @@ restart.addEventListener("click", () => {
   init();
   addClickSound();
   startTimer();
+  //
+  if (mode.innerText === "Light") {
+    nightMode(); // Ensure that dark mode settings are applied after reset
+  }
 });
 
 manualBook.addEventListener("click", () => {
@@ -518,3 +530,121 @@ manualBook.addEventListener("click", () => {
 muteButton.addEventListener("click", () => toggleSound());
 
 init();
+
+/* night mode */
+function toggleMode() {
+  if (mode.innerText === "Light") {
+    mode.innerText = "Dark";
+  } else {
+    mode.innerText = "Light";
+  }
+}
+
+function nightMode() {
+  if (mode.innerText === "Light") {
+    const blockBlack = document.querySelectorAll(".block-black");
+    blockBlack.forEach((block) => {
+      block.style.backgroundImage =
+        "url(../project-1-game/images/Black_cat_darkmode.png)";
+    });
+
+    const blockPink = document.querySelectorAll(".block-pink");
+    blockPink.forEach((block) => {
+      block.style.backgroundImage =
+        "url(../project-1-game/images/Pink_cat_darkmode.png)";
+    });
+
+    const blockOrange = document.querySelectorAll(".block-orange");
+    blockOrange.forEach((block) => {
+      block.style.backgroundImage =
+        "url(../project-1-game/images/Orange_cat_darkmode.png)";
+    });
+
+    const blockBlue = document.querySelectorAll(".block-blue");
+    blockBlue.forEach((block) => {
+      block.style.backgroundImage =
+        "url(../project-1-game/images/Blue_cat_darkmode.png)";
+    });
+
+    const blockWhite = document.querySelectorAll(".block-white");
+    blockWhite.forEach((block) => {
+      block.style.backgroundImage =
+        "url(../project-1-game/images/White_cat_darkmode.png)";
+    });
+
+    document.querySelector("body").style.backgroundImage =
+      "linear-gradient(var(--black), var(--blue))";
+
+    container.style.borderColor = "var(--blue)";
+    document.querySelector("#nav").style.backgroundColor = "var(--blue)";
+    document.querySelector("#nav").style.color = "var(--beige)";
+
+    const buttons = document.querySelectorAll(".toggles");
+    buttons.forEach((button) => {
+      button.style.backgroundColor = "var(--gray)";
+      button.style.color = "var(--linen)";
+      button.style.borderColor = "var(--lblue)";
+    });
+
+    document.querySelector("footer").style.color = "var(--beige)";
+
+    document.querySelector("#cloud").src =
+      "../project-1-game/images/Black_cloud.png";
+    document.querySelector("#cloud2").src =
+      "../project-1-game/images/Black_cloud2.png";
+    document.querySelector("#cloud3").src =
+      "../project-1-game/images/Black_cloud3.png";
+    document.querySelector("#cloud4").src =
+      "../project-1-game/images/Black_cloud.png";
+  } else if (mode.innerText === "Dark") {
+    const blockBlack = document.querySelectorAll(".block-black");
+    blockBlack.forEach((block) => {
+      block.style.backgroundImage = "";
+    });
+
+    const blockPink = document.querySelectorAll(".block-pink");
+    blockPink.forEach((block) => {
+      block.style.backgroundImage = "";
+    });
+
+    const blockOrange = document.querySelectorAll(".block-orange");
+    blockOrange.forEach((block) => {
+      block.style.backgroundImage = "";
+    });
+
+    const blockBlue = document.querySelectorAll(".block-blue");
+    blockBlue.forEach((block) => {
+      block.style.backgroundImage = "";
+    });
+
+    const blockWhite = document.querySelectorAll(".block-white");
+    blockWhite.forEach((block) => {
+      block.style.backgroundImage = "";
+    });
+
+    document.querySelector("body").style.backgroundImage = "";
+
+    container.style.borderColor = "";
+    document.querySelector("#nav").style.backgroundColor = "";
+    document.querySelector("#nav").style.color = "";
+
+    const buttons = document.querySelectorAll(".toggles");
+    buttons.forEach((button) => {
+      button.style.backgroundColor = "";
+      button.style.color = "";
+      button.style.borderColor = "";
+    });
+
+    document.querySelector("footer").style.color = "";
+
+    document.querySelector("#cloud").src = "images/Cloud.png";
+    document.querySelector("#cloud2").src = "images/Cloud2.png";
+    document.querySelector("#cloud3").src = "images/Cloud3.png";
+    document.querySelector("#cloud4").src = "images/Cloud.png";
+  }
+}
+
+mode.addEventListener("click", () => {
+  toggleMode();
+  nightMode();
+});

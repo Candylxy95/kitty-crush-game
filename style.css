@@ -142,20 +142,11 @@ li {
   align-items: center;
 }
 
-.block-orange:hover,
-.block-black:hover,
-.block-blue:hover,
-.block-pink:hover,
-.block-white:hover {
-  filter: saturate(50%);
-}
-
 .block-orange {
   width: 78px;
   height: 58px;
   background-image: url(../project-1-game/images/Cat-orange.png);
   background-size: contain;
-  /*background-color: var(--green);*/
 }
 
 .block-blue {
@@ -163,9 +154,6 @@ li {
   height: 58px;
   background-image: url(../project-1-game/images/Cat-blue.png);
   background-size: contain;
-  /*
-  background-color: var(--blue);
-  */
 }
 
 .block-white {
@@ -173,7 +161,6 @@ li {
   height: 58px;
   background-image: url(../project-1-game/images/Cat-Brown2.png);
   background-size: contain;
-  /* background-color: var(--white); */
 }
 
 .block-pink {
@@ -181,7 +168,6 @@ li {
   height: 58px;
   background-image: url(../project-1-game/images/Cat-pink.png);
   background-size: contain;
-  /*background-color: var(--pink);*/
 }
 
 .block-black {
@@ -189,7 +175,6 @@ li {
   height: 58px;
   background-image: url(../project-1-game/images/Cat-black.png);
   background-size: contain;
-  /*background-color: var(--black);*/
 }
 
 #instructions,
