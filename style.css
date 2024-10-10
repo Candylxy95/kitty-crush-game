@@ -14,16 +14,16 @@
 
 @keyframes moveCloudsL {
   from {
-    left: -10%;
+    left: -30%;
   }
   to {
-    left: 80%;
+    left: 100%;
   }
 }
 
 @keyframes moveCloudsR {
   from {
-    right: 0%;
+    right: -10%;
   }
   to {
     right: 100%;
@@ -35,7 +35,7 @@
     left: -10%;
   }
   to {
-    left: 80%;
+    left: 100%;
   }
 }
 
@@ -86,6 +86,7 @@ body {
   min-height: 100vh;
   width: 100vw;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 h1 {
