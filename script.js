@@ -374,10 +374,13 @@ function scoreSystem() {
 function didYouWin() {
   if (Number(endBoardScore.innerText) >= 200) {
     victoryMsg.innerText = "CONGRATULATIONS! You've won!";
-    victoryCat.src = "../project-1-game/images/Winning-cat.png";
-  } else if (Number(endBoardScore.innerText) < 200) {
+    victoryCat.src = "images/Winning-cat.png";
+  } else if (
+    Number(endBoardScore.innerText) < 200 ||
+    Number(endBoardScore.innerText) === 0
+  ) {
     victoryMsg.innerText = "Sorry, please try harder.";
-    victoryCat.src = "../project-1-game/images/Blue-cat-crying.png";
+    victoryCat.src = "images/Blue-cat-crying.png";
   }
 }
 
@@ -390,6 +393,7 @@ function startTimer() {
     timer.innerText = timeCount;
     if (timeCount === 0) {
       endBoard.style.display = "block";
+      blockerWall.style.display = "block";
       clearInterval(timeCounter);
     }
   }, 1000);
