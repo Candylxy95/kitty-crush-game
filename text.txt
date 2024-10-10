@@ -37,22 +37,3 @@ Stretch goals
 2) Timer
 3) Score
 
-references
-https://developer.mozilla.org/en-US/docs/Web/API/Element/children
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift
-
-https://www.w3schools.com/css/css_border.asp
-set Timer
-https://www.shecodes.io/athena/52336-how-to-create-a-countdown-timer-in-javascript#:~:text=let%20count%20%3D%2060%3B%20const%20timer,%22)%3B%20%7D%20%7D%2C%201000)%3B
-
-<a href="https://www.flaticon.com/free-icons/manual" title="manual icons">Manual icons created by Freepik - Flaticon</a>
-
-https://mixkit.co/free-sound-effects/discover/meow/
-
-https://mixkit.co/free-sound-effects/click/
-
-https://noaheakin.medium.com/adding-sound-to-your-js-web-app-f6a0ca728984
-
-https://cloudinary.com/guides/front-end-development/6-ways-to-stretch-a-background-image-with-css
-
-https://developer.mozilla.org/en-US/docs/Web/CSS/animation

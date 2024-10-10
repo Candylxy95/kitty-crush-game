@@ -1,6 +1,4 @@
 /*----------variables-------------*/
-//things to init PREV SCORE ARR,
-//Score
 
 const classArr = [
   "block-blue",
@@ -78,6 +76,9 @@ function everyCell() {
   for (let a = 1; a < gridSize; a++) {
     for (let b = 1; b < gridSize; b++) {
       let cell = getCell(a, b);
+      if (cell && cell.childNodes.length > 0) {
+        cell.removeChild(cell.firstChild);
+      }
       if (cell && cell.childNodes.length === 0) {
         cell.appendChild(randomBlocks());
       }
@@ -92,7 +93,7 @@ function findColorType(e) {
   return color.toString();
 }
 
-//return name in class form to be used w queryselector when checking for surrounding cells in burstBlock/hover functions
+//return name in class form to be used w queryselector when checking for surrounding cells in groupBlock functions
 function findClass(colorType) {
   return "." + colorType;
 }
@@ -502,9 +503,9 @@ replay.addEventListener("click", () => {
   blockerWall.style.display = "none";
   addClickSound();
   startTimer();
-  //
+
   if (mode.innerText === "Light") {
-    nightMode(); // Ensure that dark mode settings are applied after reset
+    nightMode();
   }
 });
 
@@ -516,9 +517,9 @@ restart.addEventListener("click", () => {
   init();
   addClickSound();
   startTimer();
-  //
+
   if (mode.innerText === "Light") {
-    nightMode(); // Ensure that dark mode settings are applied after reset
+    nightMode();
   }
 });
 
