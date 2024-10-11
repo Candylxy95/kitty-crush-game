@@ -52,17 +52,17 @@ git clone https://github.com/Candylxy95/kitty-crush-game.git
 
 #### Graphic Design
 
-- Font-Family 'Lexend' obtained from: [Google Fonts]("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap").
-- User Guide Icon can be found at: [FLATICON]("https://www.flaticon.com/free-icons/manual").
-- Cats and clouds graphics drawn by me with: [Adobe Illustrator]("https://www.adobe.com/sg/products/illustrator").
+- Font-Family 'Lexend' obtained from: [Google Fonts](https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap).
+- User Guide Icon can be found at: [FLATICON](https://www.flaticon.com/free-icons/manual).
+- Cats and clouds graphics drawn by me with: [Adobe Illustrator](https://www.adobe.com/sg/products/illustrator).
 
 #### Sound Effects
 
-- Meowing sound effect obtained from: [Mixkit]("https://mixkit.co").
-- Clicking sound effect obtained from: [Mixkit]("https://mixkit.co").
+- Meowing sound effect obtained from: [Mixkit](https://mixkit.co).
+- Clicking sound effect obtained from: [Mixkit](https://mixkit.co).
 
 #### Javascript References & Resources
 
-- [MDN docs]("https://developer.mozilla.org/en-US/")
-- [w3schools]("https://www.w3schools.com")
-- [SheCodes]("https://www.shecodes.io")
+- [MDN docs](https://developer.mozilla.org/en-US/)
+- [w3schools](https://www.w3schools.com)
+- [SheCodes](https://www.shecodes.io)
