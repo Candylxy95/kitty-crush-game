@@ -8,7 +8,7 @@ This is a Browser Game inspired from my childhood favorite: Neopet's "Destruct-O
 
 ## Game Demo
 
-Try out the game at:
+Try out the game at:[Kitty Crush](https://candylxy95.github.io/kitty-crush-game/)
 
 ## Features
 
