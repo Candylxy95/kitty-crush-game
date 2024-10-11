@@ -35,12 +35,8 @@ let timeCounter = ""; //var to clear interval
 timer.innerText = timeCount;
 
 //declare Sound effect
-let clickSound = new Audio(
-  "../project-1-game/sound/mixkit-gear-fast-lock-tap-2857.wav"
-);
-let meowSound = new Audio(
-  "../project-1-game/sound/mixkit-sweet-kitty-meow-93.wav"
-);
+let clickSound = new Audio("sound/mixkit-gear-fast-lock-tap-2857.wav");
+let meowSound = new Audio("sound/mixkit-sweet-kitty-meow-93.wav");
 
 const muteButton = document.querySelector("#mute");
 
@@ -549,32 +545,27 @@ function nightMode() {
   if (mode.innerText === "Light") {
     const blockBlack = document.querySelectorAll(".block-black");
     blockBlack.forEach((block) => {
-      block.style.backgroundImage =
-        "url(../project-1-game/images/Black_cat_darkmode.png)";
+      block.style.backgroundImage = "url(images/Black_cat_darkmode.png)";
     });
 
     const blockPink = document.querySelectorAll(".block-pink");
     blockPink.forEach((block) => {
-      block.style.backgroundImage =
-        "url(../project-1-game/images/Pink_cat_darkmode.png)";
+      block.style.backgroundImage = "url(images/Pink_cat_darkmode.png)";
     });
 
     const blockOrange = document.querySelectorAll(".block-orange");
     blockOrange.forEach((block) => {
-      block.style.backgroundImage =
-        "url(../project-1-game/images/Orange_cat_darkmode.png)";
+      block.style.backgroundImage = "url(images/Orange_cat_darkmode.png)";
     });
 
     const blockBlue = document.querySelectorAll(".block-blue");
     blockBlue.forEach((block) => {
-      block.style.backgroundImage =
-        "url(../project-1-game/images/Blue_cat_darkmode.png)";
+      block.style.backgroundImage = "url(images/Blue_cat_darkmode.png)";
     });
 
     const blockWhite = document.querySelectorAll(".block-white");
     blockWhite.forEach((block) => {
-      block.style.backgroundImage =
-        "url(../project-1-game/images/White_cat_darkmode.png)";
+      block.style.backgroundImage = "url(images/White_cat_darkmode.png)";
     });
 
     document.querySelector("body").style.backgroundImage =
@@ -593,14 +584,10 @@ function nightMode() {
 
     document.querySelector("footer").style.color = "var(--beige)";
 
-    document.querySelector("#cloud").src =
-      "../project-1-game/images/Black_cloud.png";
-    document.querySelector("#cloud2").src =
-      "../project-1-game/images/Black_cloud2.png";
-    document.querySelector("#cloud3").src =
-      "../project-1-game/images/Black_cloud3.png";
-    document.querySelector("#cloud4").src =
-      "../project-1-game/images/Black_cloud.png";
+    document.querySelector("#cloud").src = "images/Black_cloud.png";
+    document.querySelector("#cloud2").src = "images/Black_cloud2.png";
+    document.querySelector("#cloud3").src = "images/Black_cloud3.png";
+    document.querySelector("#cloud4").src = "images/Black_cloud.png";
   } else if (mode.innerText === "Dark") {
     const blockBlack = document.querySelectorAll(".block-black");
     blockBlack.forEach((block) => {

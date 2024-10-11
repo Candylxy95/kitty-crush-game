@@ -145,35 +145,35 @@ li {
 .block-orange {
   width: 78px;
   height: 58px;
-  background-image: url(../project-1-game/images/Cat-orange.png);
+  background-image: url(images/Cat-orange.png);
   background-size: contain;
 }
 
 .block-blue {
   width: 78px;
   height: 58px;
-  background-image: url(../project-1-game/images/Cat-blue.png);
+  background-image: url(images/Cat-blue.png);
   background-size: contain;
 }
 
 .block-white {
   width: 78px;
   height: 58px;
-  background-image: url(../project-1-game/images/Cat-Brown2.png);
+  background-image: url(images/Cat-Brown2.png);
   background-size: contain;
 }
 
 .block-pink {
   width: 78px;
   height: 58px;
-  background-image: url(../project-1-game/images/Cat-pink.png);
+  background-image: url(images/Cat-pink.png);
   background-size: contain;
 }
 
 .block-black {
   width: 78px;
   height: 58px;
-  background-image: url(../project-1-game/images/Cat-black.png);
+  background-image: url(images/Cat-black.png);
   background-size: contain;
 }
 
