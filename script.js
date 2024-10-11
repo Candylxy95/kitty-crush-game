@@ -631,7 +631,7 @@ function nightMode() {
 
     document.querySelector("#cloud").src = "images/Cloud.png";
     document.querySelector("#cloud2").src = "images/Cloud2.png";
-    document.querySelector("#cloud3").src = "images/Cloud3.png";
+    document.querySelector("#cloud3").src = "images/cloud3.png";
     document.querySelector("#cloud4").src = "images/Cloud.png";
   }
 }
