@@ -1,10 +1,10 @@
-![Kitty Crush Logo](https://file%2B.vscode-resource.vscode-cdn.net/Users/candyl/Documents/GitHub/project-1-game/README%20images/Kitty-crush-logo.png?version%3D1728625143281)
+![Kitty Crush Logo](/README-images/Kitty-crush-logo.png)
 
 # Kitty Crush
 
 This is a Browser Game inspired from my childhood favorite: Neopet's "Destruct-O-Match" - but in larger display and adorable cats graphics to zen-click on. This game has been built using HTML, CSS and JavaScript. Double-click on connecting cats of the same color to clear the cats from the board and earn as many points as possible within a minute.
 
-![Kitty Crush in Light Mode](https://file%2B.vscode-resource.vscode-cdn.net/Users/candyl/Documents/GitHub/project-1-game/README%20images/Kitty-Crush-Lightmode.png?version%3D1728625939484)
+![Kitty Crush in Light Mode](/README-images/Kitty-Crush-Lightmode.png)
 
 ## Game Demo
 
@@ -12,7 +12,7 @@ Try out the game at:
 
 ## Features
 
-![Kitty Crush in Dark Mode](https://file%2B.vscode-resource.vscode-cdn.net/Users/candyl/Documents/GitHub/project-1-game/README%20images/Kitty-Crush-Darkmode.png?version%3D1728625984560)
+![Kitty Crush in Dark Mode](/README-images/Kitty-Crush-Darkmode.png)
 
 - **Dark Mode**: Switch to a darker theme with less contrastive UI
 - **Group Hover Effect**: Enlarging animation when you hover over a group of cats of the same color
@@ -31,7 +31,7 @@ git clone https://github.com/Candylxy95/kitty-crush-game.git
 
 2. Open the folder and run index.html on your browser.
 
-![index.html](https://file%2B.vscode-resource.vscode-cdn.net/Users/candyl/Documents/GitHub/project-1-game/README%20images/Folder.png?version%3D1728624396943)
+![index.html](/README-images/Folder.png)
 
 ## Future Enhancements
 
